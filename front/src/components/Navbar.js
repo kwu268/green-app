@@ -9,6 +9,8 @@ import InputBase from '@mui/material/InputBase';
 import MenuIcon from '@mui/icons-material/Menu';
 import SearchIcon from '@mui/icons-material/Search';
 import GolfCourseIcon from '@mui/icons-material/GolfCourse';
+import SettingsIcon from '@mui/icons-material/Settings';
+import { Button } from '@mui/material';
 
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
@@ -52,38 +54,39 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
   },
 }));
 
-export default function SearchAppBar() {
+export default function Navbar() {
   return (
-    <Box sx={{ flexGrow: 1 }}>
-      <AppBar position="static">
-        <Toolbar className='bg-green-300'>
-          <IconButton
-            size="large"
-            edge="start"
-            color="inherit"
-            aria-label="open drawer"
-            sx={{ mr: 2 }}
-          >
-            <MenuIcon />
-          </IconButton>
-          <Typography
-            variant="h6"
-            noWrap
-            component="div"
-            sx={{ flexGrow: 1, display: { xs: 'none', sm: 'block' } }}
-          >
-            Green <GolfCourseIcon />
-          </Typography>
+    <Box className="absolute w-24 h-screen " >
+      <AppBar className='absolute h-full ' >
+        <Toolbar className='justify-between bg-green-300 flex flex-col h-full '>
+          <div className='ml-8'>
+            <IconButton
+              size="large"
+              edge="start"
+              color="inherit"
+              aria-label="open drawer"
+              sx={{ mr: 2 }}
+            >
+              <Typography variant="h6" noWrap component="div"> 
+                Green 
+                <GolfCourseIcon className='mb-2'/>
+              </Typography>
+            </IconButton>
+            <Button>
+              <SearchIcon className='ml-2 text-white' />
+            </Button>
+          </div>
+   
+
+            
           
-          <Search>
-            <SearchIconWrapper>
-              <SearchIcon />
-            </SearchIconWrapper>
-            <StyledInputBase
-              placeholder="Search…"
-              inputProps={{ 'aria-label': 'search' }}
-            />
-          </Search>
+          <div className="mb-2">
+            <Button>
+              <SettingsIcon className='text-white'/>
+            </Button>
+          </div>
+        
+
         </Toolbar>
       </AppBar>
     </Box>

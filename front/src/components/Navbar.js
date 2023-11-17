@@ -1,54 +1,54 @@
-import * as React from 'react';
-import { styled, alpha } from '@mui/material/styles';
-import AppBar from '@mui/material/AppBar';
-import Box from '@mui/material/Box';
-import Toolbar from '@mui/material/Toolbar';
-import IconButton from '@mui/material/IconButton';
-import Typography from '@mui/material/Typography';
-import InputBase from '@mui/material/InputBase';
-import MenuIcon from '@mui/icons-material/Menu';
-import SearchIcon from '@mui/icons-material/Search';
-import GolfCourseIcon from '@mui/icons-material/GolfCourse';
-import SettingsIcon from '@mui/icons-material/Settings';
-import { Button } from '@mui/material';
+import * as React from "react";
+import { styled, alpha } from "@mui/material/styles";
+import AppBar from "@mui/material/AppBar";
+import Box from "@mui/material/Box";
+import Toolbar from "@mui/material/Toolbar";
+import IconButton from "@mui/material/IconButton";
+import Typography from "@mui/material/Typography";
+import InputBase from "@mui/material/InputBase";
+import MenuIcon from "@mui/icons-material/Menu";
+import SearchIcon from "@mui/icons-material/Search";
+import GolfCourseIcon from "@mui/icons-material/GolfCourse";
+import SettingsIcon from "@mui/icons-material/Settings";
+import { Button } from "@mui/material";
 
-const Search = styled('div')(({ theme }) => ({
-  position: 'relative',
+const Search = styled("div")(({ theme }) => ({
+  position: "relative",
   borderRadius: theme.shape.borderRadius,
   backgroundColor: alpha(theme.palette.common.white, 0.15),
-  '&:hover': {
+  "&:hover": {
     backgroundColor: alpha(theme.palette.common.white, 0.25),
   },
   marginLeft: 0,
-  width: '100%',
-  [theme.breakpoints.up('sm')]: {
+  width: "100%",
+  [theme.breakpoints.up("sm")]: {
     marginLeft: theme.spacing(1),
-    width: 'auto',
+    width: "auto",
   },
 }));
 
-const SearchIconWrapper = styled('div')(({ theme }) => ({
+const SearchIconWrapper = styled("div")(({ theme }) => ({
   padding: theme.spacing(0, 2),
-  height: '100%',
-  position: 'absolute',
-  pointerEvents: 'none',
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'center',
+  height: "100%",
+  position: "absolute",
+  pointerEvents: "none",
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "center",
 }));
 
 const StyledInputBase = styled(InputBase)(({ theme }) => ({
-  color: 'inherit',
-  '& .MuiInputBase-input': {
+  color: "inherit",
+  "& .MuiInputBase-input": {
     padding: theme.spacing(1, 1, 1, 0),
     // vertical padding + font size from searchIcon
     paddingLeft: `calc(1em + ${theme.spacing(4)})`,
-    transition: theme.transitions.create('width'),
-    width: '100%',
-    [theme.breakpoints.up('sm')]: {
-      width: '12ch',
-      '&:focus': {
-        width: '20ch',
+    transition: theme.transitions.create("width"),
+    width: "100%",
+    [theme.breakpoints.up("sm")]: {
+      width: "12ch",
+      "&:focus": {
+        width: "20ch",
       },
     },
   },
@@ -56,10 +56,10 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 
 export default function Navbar() {
   return (
-    <Box className="absolute w-24 h-screen " >
-      <AppBar className='absolute h-full ' >
-        <Toolbar className='justify-between bg-green-300 flex flex-col h-full '>
-          <div className='ml-8'>
+    <Box className="relative w-24 h-screen">
+      <AppBar className="absolute h-full ">
+        <Toolbar className="justify-between bg-green-300 flex flex-col h-full ">
+          <div className="ml-8">
             <IconButton
               size="large"
               edge="start"
@@ -67,29 +67,27 @@ export default function Navbar() {
               aria-label="open drawer"
               sx={{ mr: 2 }}
             >
-              <Typography variant="h6" noWrap component="div"> 
-                Green 
-                <GolfCourseIcon className='mb-2'/>
+              <Typography
+                variant="h6"
+                noWrap
+                component="div"
+                className="text-black"
+              >
+                Green
+                <GolfCourseIcon className="mb-2" />
               </Typography>
             </IconButton>
             <Button>
-              <SearchIcon className='ml-2 text-white' />
+              <SearchIcon className="ml-2 text-black" />
             </Button>
           </div>
-   
-
-            
-          
           <div className="mb-2">
             <Button>
-              <SettingsIcon className='text-white'/>
+              <SettingsIcon className="text-white" />
             </Button>
           </div>
-        
-
         </Toolbar>
       </AppBar>
     </Box>
   );
 }
-

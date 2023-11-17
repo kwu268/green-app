@@ -5,8 +5,11 @@ module.exports = {
   important: "#root",
 
   theme: {
-    extend: {},
+    extend: {
+      colors: {
+        primary: "#BBF7D0",
+      },
+    },
   },
   plugins: [],
-}
-
+};

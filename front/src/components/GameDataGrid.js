@@ -1,39 +1,36 @@
-import * as React from 'react';
-import Card from '@mui/material/Card';
-import CardContent from '@mui/material/CardContent';
-import Typography from '@mui/material/Typography';
-import { Button, CardActionArea, CardActions } from '@mui/material';
+import * as React from "react";
+import Card from "@mui/material/Card";
+import CardContent from "@mui/material/CardContent";
+import Typography from "@mui/material/Typography";
+import { Button, CardActionArea, CardActions } from "@mui/material";
 
-export default function GameDataCard({courseData}) {
+export default function GameDataCard({ courseData }) {
   const { courseName, courseType, totalPar, totalStrokes, imgSrc } = courseData;
-  
+
   return (
-    <Card className='max-w-xs' >
+    <Card className="max-w-xs border-gray-400 border-2">
       <CardActionArea>
-        <img src={imgSrc} alt="Oak Gables" />
+        <img className="w-full h-24" src={imgSrc} alt="Oak Gables" />
         <CardContent>
           <Typography gutterBottom variant="h5" component="div">
             {courseName}
           </Typography>
-          <div className='flex gap-3 justify-center '>
+          <div className="flex gap-3 justify-center ">
             <div>
-              <div className='font-bold '>Holes</div>
+              <div className="font-bold ">Holes</div>
               <div>{courseType}</div>
             </div>
 
             <div>
-              <div className='font-bold '>Par</div>
+              <div className="font-bold ">Par</div>
               <div>{totalPar}</div>
             </div>
 
             <div>
-              <div className='font-bold '>Strokes</div>
+              <div className="font-bold ">Strokes</div>
               <div>{totalStrokes}</div>
             </div>
           </div>
-           
-          
-
         </CardContent>
       </CardActionArea>
       <CardActions>

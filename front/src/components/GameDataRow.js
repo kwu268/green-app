@@ -8,19 +8,19 @@ export default function GameDataRow({courseData}) {
   
 
   return (
-    <Card className='max-h-xs h-28 w-full mr-32  flex' >
-      <div>
-          <img src={imgSrc} alt="Oak Gables" className='w-64 h-52' />
+    <Card className='flex border-2 border-gray-400 rounded-md' >
+      <div className='w-1/5'>
+          <img src={imgSrc} alt="Oak Gables"/>
       </div>
       
       <CardActionArea className=''>
         <div className='flex justify-around'>
 
-          <div className='text-xl font-bold w-44 '>
+          <div className='text-xl font-bold w-1/5'>
             {courseName}
           </div>
 
-          <div className=''>
+          <div >
             <div className='flex gap-3 justify-center '>
               <div>
                 <div className='font-bold '>Holes</div>

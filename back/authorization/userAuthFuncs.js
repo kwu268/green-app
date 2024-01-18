@@ -20,4 +20,19 @@ await supabase.auth.signUp(
 })
 } 
 
-module.exports = sendCreateUserRequest
+
+const sendSignInRequest = async (email, password) => {
+await supabase.auth.signInWithPassword(
+    {
+        email: email,
+        password: password,
+        })
+.then( (data) => {
+console.log(data)
+})
+.catch( (error) => {
+console.log(error)
+})
+}
+
+module.exports = {sendCreateUserRequest, sendSignInRequest}

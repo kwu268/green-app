@@ -63,7 +63,7 @@ function SignInPage() {
                 <input  type="text" placeholder={`Email`} />
                 <input  type="password" placeholder={`password`} /> 
                 <input  type="text" placeholder={`Display Name`} />
-                <button className='w-1/4' type="submit">{`Search`}</button>
+                <button className='w-1/4 shadow-xl' type="submit">{`Search`}</button>
             </form>
           </div>
         </div>

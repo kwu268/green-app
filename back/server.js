@@ -6,10 +6,10 @@ const app = express()
 app.use(cors());
 app.use(express.json());
 
-const sendCreateUserRequest = require('./authorization/createUser')
+const {sendCreateUserRequest, sendSignInRequest} = require('./authorization/userAuthFuncs')
+
 
 app.get("/", (req, res) => {
-    console.log(supabase)
     res.json("here")
 }) 
 
@@ -20,5 +20,12 @@ app.post("/createUser", (req, res) => {
     // console.log(result)
     
 });
+
+app.get("/signIn", (req, res) => {
+    const {email, password} = req.body;
+    const result = sendSignInRequest("kelvinwu717@gmail.com", "123456")
+    res.json(result)
+}) 
+
 
 app.listen(3001, () => {"Server started on port 3001"})

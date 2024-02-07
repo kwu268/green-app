@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import "./Global.css";
 import Navbar from "../components/Navbar.js";
 import GameDataGrid from "../components/GameDataGrid.js";
 import GameDataRow from "../components/GameDataRow.js";

@@ -1,31 +1,36 @@
-const express = require('express');
-const cors = require('cors');
+const express = require("express");
+const cors = require("cors");
 
-
-const app = express()
+const app = express();
 app.use(cors());
 app.use(express.json());
 
-const {sendCreateUserRequest, sendSignInRequest} = require('./authorization/userAuthFuncs')
-
+const {
+  sendCreateUserRequest,
+  sendSignInRequest,
+} = require("./authorization/userAuthFuncs");
 
 app.get("/", (req, res) => {
-    res.json("here")
-}) 
-
-app.post("/createUser", (req, res) => {
-    const {email, password, display_name} = req.body;
-    const result = sendCreateUserRequest(email, password, display_name)
-    res.json({"result": result})
-    // console.log(result)
-    
+  res.json("here");
 });
 
-app.get("/signIn", (req, res) => {
-    const {email, password} = req.body;
-    const result = sendSignInRequest("kelvinwu717@gmail.com", "123456")
-    res.json(result)
-}) 
+app.post("/createUser", async (req, res) => {
+  const { email, password, display_name } = req.body;
+  try {
+    const request = await sendCreateUserRequest(email, password, display_name);
+    res.json({ result: "created" });
+  } catch (error) {
+    res.json({ result: error.message }); 
+  }
+});
 
+app.post("/signIn", async (req, res) => {
+  const { email, password } = req.body;
+  const result = await sendSignInRequest(email, password);
+  res.json(result);
+  console.log(result)
+});
 
-app.listen(3001, () => {"Server started on port 3001"})
+app.listen(3001, () => {
+  "Server started on port 3001";
+});

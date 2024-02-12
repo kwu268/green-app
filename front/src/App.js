@@ -10,21 +10,21 @@ import HomePage from "./pages/HomePage.js";
 import Navbar from "./components/Navbar.js";
 function App() {
   const [viewType, setViewType] = useState("grid");
-  const [isSignedIn, setIsSignedIn] = useState(false);
+  const [isSignedIn, setIsSignedIn] = useState(true);
   
 
 
   return (
-    <div className="">
+    <div className="bg-gradient-to-b from-green-300 to-green-200 w-screen min-h-screen h-auto flex flex-col">
       {isSignedIn && <Navbar/>}
-      <BrowserRouter>
+
         <Routes>
           <Route path="/sign-in" element={<SignInPage />} />
           <Route path="/account-created" element={<AccountCreatedPage />} />
           <Route path="/home" element={<HomePage/>} />
           <Route path="/profile" element={<ProfilePage />} />
         </Routes>
-      </BrowserRouter>
+
     </div>
     
     // <div>

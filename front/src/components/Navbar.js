@@ -1,55 +1,117 @@
-import * as React from 'react';
-import { styled, alpha } from '@mui/material/styles';
-import AppBar from '@mui/material/AppBar';
-import Box from '@mui/material/Box';
-import Toolbar from '@mui/material/Toolbar';
-import IconButton from '@mui/material/IconButton';
-import Typography from '@mui/material/Typography';
-import InputBase from '@mui/material/InputBase';
-import MenuIcon from '@mui/icons-material/Menu';
-import SearchIcon from '@mui/icons-material/Search';
-import GolfCourseIcon from '@mui/icons-material/GolfCourse';
+import React, { useState } from "react";
+import { motion } from "framer-motion";
+import { Link } from "react-router-dom";
+import MenuIcon from "@mui/icons-material/Menu";
+import CloseIcon from "@mui/icons-material/Close";
+import HomeIcon from '@mui/icons-material/Home';
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import SettingsIcon from '@mui/icons-material/Settings';
-import { Button } from '@mui/material';
-
-
 
 export default function Navbar() {
+  const [show, setShow] = useState(false);
+  const variants = {
+    open: (height = 1000) => ({
+      clipPath: `circle(${height * 2 + 200}px at 30px 40px)`,
+      transition: {
+        type: "spring",
+        stiffness: 20,
+        restDelta: 2,
+      },
+    }),
+    closed: {
+      clipPath: "circle(30px at 40px 40px)",
+      transition: {
+        delay: 0.2,
+        type: "spring",
+        stiffness: 400,
+        damping: 40,
+      },
+    },
+  };
+
+  const variants_items = {
+    open: {
+      opacity: 1,
+      x: 0,
+      transition: {
+        ease: "easeInOut",
+        duration: 0.6,
+      },
+    },
+    closed: {
+      opacity: 0,
+      x: -50,
+      transition: {
+        ease: "easeOut",
+        damping: 30,
+        duration: 1,
+        staggerChildren: 0.05,
+        staggerDirection: -1,
+      },
+    },
+  };
+
   return (
-    <AppBar className='fixed left-0 w-nav h-full '>
-      <Toolbar className='bg-green-300 flex flex-col justify-start h-full '>
-        <div className='flex'>
-        
-          <IconButton
-              size="large"
-              edge="start"
-              color="inherit"
-              aria-label="open drawer"
+    <div className="fixed ">
+      <motion.nav
+        animate={show ? "open" : "closed"}
+        variants={variants}
+        transition={{ duration: 0.5 }}
+        initial="closed"
+        className=" top-0 left-0 bottom-0 fixed w-[245px] "
+      >
+        {/* inner nav */}
+        <div className=" absolute top-0 left-0 bottom-0 w-full bg-white ">
+          <motion.ul className="flex flex-col mt-20 gap-2" variants={variants_items}>
+            {/* Wrap each Link with motion.li and apply the itemVariants */}
+            <motion.li
+              variants={variants_items}
+              whileHover={{ scale: 1.1 }}
+              whileTap={{ scale: 0.95 }}
+              className="flex items-center w-full pl-4 gap-2 "
             >
-              <div className='flex justify-center '> 
-                <div className='text-lg font-semibold '>Green</div>
-                <GolfCourseIcon className='w-1/2'/>
-              </div>
-            </IconButton>
-          </div>
-              
+              <HomeIcon/>
+              <Link to="/home" className="block py-2 w-full rounded-md ">
+                Home
+              </Link>
+            </motion.li>
+            <motion.li
+              variants={variants_items}
+              whileHover={{ scale: 1.1 }}
+              whileTap={{ scale: 0.95 }}
+              className="flex items-center w-full pl-4 gap-2"
+            >
+              <AccountCircleIcon/>
+              <Link to="/profile" className="block py-2 w-full">
+                Profile
+              </Link>
+            </motion.li>
+            <motion.li
+              variants={variants_items}
+              whileHover={{ scale: 1.1 }}
+              whileTap={{ scale: 0.95 }}
+              className="flex items-center w-full pl-4 gap-2 "
+            >
+              <SettingsIcon/>
+              <button className="w-full py-2 text-start">Settings</button>
+            </motion.li>
+          </motion.ul>
+        </div>
+      </motion.nav>
 
-            <Button>
-              <SearchIcon className=' text-white' />
-            </Button>
-
-
-            
-          
-          <div className="mt-auto">
-            <Button>
-              <SettingsIcon className='text-white'/>
-            </Button>
-          </div>
-        
-
-        </Toolbar>
-      </AppBar>
+      <motion.button
+        className="fixed left-[1.43%] top-[2.8%]  font-medium  rounded-md  shadow-xl text-black border-white bg-white "
+        onClick={() => {
+          setShow(!show);
+        }}
+        whileHover={{ scale: 1.1 }}
+        whileTap={{ scale: 0.9 }}
+        initial={{ opacity: 0 }} // Start with an opacity of 0 (completely transparent)
+        animate={{ opacity: 1 }} // End with an opacity of 1 (fully visible)
+        transition={{ duration: 1.5 }}
+      >
+        {!show ? <MenuIcon /> : <CloseIcon />}
+      </motion.button>
+    </div>
   );
 }
-

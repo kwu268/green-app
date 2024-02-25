@@ -6,7 +6,7 @@ app.use(cors());
 app.use(express.json());
 
 const { sendCreateUserRequest, sendSignInRequest, sendGetUserRequest} = require("./authorization/userAuthFuncs");
-const { sendCreatePostRequest} = require("./posts/userPostFuncs");
+const { sendCreatePostRequest, sendFetchPostsRequest } = require("./posts/userPostFuncs");
 
 
 app.get("/", (req, res) => {
@@ -53,6 +53,16 @@ app.post("/createPost", async (req, res) => {
     console.log(error)
       res.json({result: error.message})
   } 
+})
+
+app.get("/getProfilePost", async (req, res) => {
+  const { user_id } = req.query;
+  try {
+    const posts = await sendFetchPostsRequest(user_id);
+    res.json(posts );
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
 })
 
 

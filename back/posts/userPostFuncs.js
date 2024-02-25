@@ -20,20 +20,17 @@ const sendCreatePostRequest =  async (title, numHoles, strokes, userID) => {
   }
 
 
-const sendFetchPostsRequest = async () => {
-  await supabase
-  .from('user_posts')
-  .select()
-  .then((data) => {
-    if (data.error) {
-      throw new Error(data.error);
-    }
-    console.log(data);
-    return data;
-  })
-  .catch((error) => {
-    throw error;
-  });
-}
+const sendFetchPostsRequest =  async (user_id) => {
+  try {
+    const response = await supabase
+    .from('user_posts')
+    .select()
+    .eq('created_by', user_id)
+    // console.log(response.data)
+    return response.data
+  } catch (error) {
+    
+  }
+  }
 
 module.exports = { sendCreatePostRequest, sendFetchPostsRequest };

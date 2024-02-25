@@ -5,15 +5,13 @@ import { useNavigate } from 'react-router-dom'
 
 const serverURL = process.env.REACT_APP_BACKEND_SERVER;
 
-function LoginForm() {
+function LoginForm({setToken}) {
   // Consts
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
 
   const navigate = useNavigate()
-  const navToVerifyPage = (user, session) => {
-    navigate('/home', { state: { data: {"user": user, "session": session} } })
-  }
+
 
   const logIn = async (email, password) => {
     setIsLoading(true)
@@ -24,8 +22,8 @@ function LoginForm() {
     await axios.post(`${serverURL}/signIn`, { ...params })
     .then((response) => {
       setIsLoading(false)
-      const  { user, session } = response.data;
-      navToVerifyPage(user, session)
+      setToken(response.data);
+      navigate('/home')
 
     })
     .catch((e) => {

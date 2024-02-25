@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./Global.css";
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
@@ -9,20 +9,33 @@ import AccountCreatedPage from "./pages/AccountCreatedPage.js";
 import HomePage from "./pages/HomePage.js";
 import Navbar from "./components/Navbar.js";
 function App() {
-  const [viewType, setViewType] = useState("grid");
-  const [isSignedIn, setIsSignedIn] = useState(true);
   
+  const [isSignedIn, setIsSignedIn] = useState(true);
+  const [token, setToken] = useState(false);
+
+  if (token) {
+    sessionStorage.setItem('token', JSON.stringify(token))
+  }
+
+  useEffect( () => {
+    if (sessionStorage.getItem('token')) {
+      const tokenData = JSON.parse(sessionStorage.getItem('token'));
+      setToken(tokenData)
+    }
+  }, [])
+
 
 
   return (
-    <div className="bg-gradient-to-b from-green-300 to-green-200 w-screen min-h-screen h-auto flex flex-col">
-      {isSignedIn && <Navbar/>}
+    <div className="bg-gradient-to-b from-green-200 to-green-200 w-screen min-h-screen h-auto flex flex-col">
+      {token && <Navbar token={token}/>}
 
         <Routes>
-          <Route path="/sign-in" element={<SignInPage />} />
+          <Route path="/sign-in" element={<SignInPage setToken={setToken}/>} />
           <Route path="/account-created" element={<AccountCreatedPage />} />
-          <Route path="/home" element={<HomePage/>} />
-          <Route path="/profile" element={<ProfilePage />} />
+          {token && <Route path="/profile" element={<ProfilePage token={token}/>} />}
+          {token && <Route path="/home" element={<HomePage token={token}/>}/>}
+          {token && <Route path="/" element={<HomePage token={token}/>} />}
         </Routes>
 
     </div>

@@ -6,9 +6,27 @@ import CloseIcon from "@mui/icons-material/Close";
 import HomeIcon from '@mui/icons-material/Home';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import SettingsIcon from '@mui/icons-material/Settings';
+import AddBoxIcon from '@mui/icons-material/AddBox';
+import Button from '@mui/material/Button';
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import DialogTitle from '@mui/material/DialogTitle';
+import CreateGameForm from "./CreateGameForm";
 
-export default function Navbar() {
+export default function Navbar({token}) {
   const [show, setShow] = useState(false);
+  const [open, setOpen] = useState(false);
+
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
   const variants = {
     open: (height = 1000) => ({
       clipPath: `circle(${height * 2 + 200}px at 30px 40px)`,
@@ -95,12 +113,31 @@ export default function Navbar() {
               <SettingsIcon/>
               <button className="w-full py-2 text-start">Settings</button>
             </motion.li>
+            <motion.li
+              variants={variants_items}
+              whileHover={{ scale: 1.1 }}
+              whileTap={{ scale: 0.95 }}
+              className="flex items-center w-full pl-4 gap-2"
+            >
+              <AddBoxIcon/>
+              <button className="w-full py-2 text-start" onClick={handleClickOpen}>Create</button>
+              <Dialog
+                className="flex flex-col items-center"
+                open={open}
+                onClose={handleClose}
+                fullWidth
+              >
+                <DialogContent>
+                  <CreateGameForm token={token}/>
+                </DialogContent>
+              </Dialog>
+            </motion.li>
           </motion.ul>
         </div>
       </motion.nav>
 
       <motion.button
-        className="fixed left-[1.43%] top-[2.8%]  font-medium  rounded-md  shadow-xl text-black border-white bg-white "
+        className="fixed left-[0.5%] top-[1.1%]  font-medium rounded-full w-[60px] h-[60px]  shadow-xl text-black border-white  bg-white"
         onClick={() => {
           setShow(!show);
         }}

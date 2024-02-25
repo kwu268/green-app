@@ -10,7 +10,7 @@ import AppsIcon from "@mui/icons-material/Apps";
 import MenuIcon from "@mui/icons-material/Menu";
 import AvatarInfo from "../components/AvatarInfo.js";
 
-function ProfilePage() {
+function ProfilePage({token}) {
   const [viewType, setViewType] = useState("grid");
 
   return (
@@ -19,7 +19,7 @@ function ProfilePage() {
         {/* 3 divs total: profile, side info, recent posts */}
         <div className=" flex h-[500px] w-full rounded-tl-xl rounded-tr-xl ">
           {/* top half */}
-          <div className="flex flex-col w-2/3 shadow-md shadow-slate-500 rounded-xl">
+          <div className="flex flex-col w-2/3 shadow-md shadow-slate-300 rounded-xl">
             <div className="bg-gradient-to-tr from-amber-500 via-fuchsia-300 to-cyan-300 h-1/3 rounded-tl-xl rounded-tr-xl">
               <div className="relative top-20 left-[20px] w-44 rounded-full p-2 bg-white flex">
                 <AvatarInfo />
@@ -29,12 +29,12 @@ function ProfilePage() {
               Name info and follower info
             </div>
           </div>
-          <div className="bg-white h-full w-1/3 ml-4 shadow-md shadow-slate-500 rounded-xl">
+          <div className="bg-white h-full w-1/3 ml-4 shadow-md shadow-slate-300 rounded-xl">
             about me section and golf stats
           </div>
         </div>
 
-        <div className=" bg-white w-full  my-4 shadow-md shadow-slate-500 rounded-xl min-h-[600px] "> 
+        <div className=" bg-white w-full  my-4 shadow-md shadow-slate-300 rounded-xl min-h-[600px] "> 
           posts
         </div>
 

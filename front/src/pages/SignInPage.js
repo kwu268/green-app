@@ -3,7 +3,7 @@ import axios from 'axios';
 import CreateAccountForm from '../components/CreateAccountForm';
 import LoginForm from '../components/LoginForm';
 import logo from '../images/logo.png';
-function SignInPage() {
+function SignInPage({setToken}) {
   //consts
   const [isLoginForm, setLoginForm] = useState(true)
   const [isSignUpForm, setSignUpForm] = useState(false)
@@ -17,7 +17,7 @@ function SignInPage() {
             <div className=''>
               {isLoginForm && (
               <div className='w-full  flex flex-col items-center'> 
-                <LoginForm /> 
+                <LoginForm setToken={setToken}/> 
                 <div className='flex py-2'>
                   New to Greeen?
                   <button className="pl-2 font-medium text-blue-500   " type="submit" onClick={() => {

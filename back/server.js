@@ -5,15 +5,16 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-const {
-  sendCreateUserRequest,
-  sendSignInRequest,
-} = require("./authorization/userAuthFuncs");
+const { sendCreateUserRequest, sendSignInRequest, sendGetUserRequest} = require("./authorization/userAuthFuncs");
+const { sendCreatePostRequest} = require("./posts/userPostFuncs");
+
 
 app.get("/", (req, res) => {
   res.json("here");
 });
 
+
+// User Authentication 
 app.post("/createUser", async (req, res) => {
   const { email, password, display_name } = req.body;
   try {
@@ -30,6 +31,30 @@ app.post("/signIn", async (req, res) => {
   res.json(result);
   console.log(result)
 });
+
+// app.get("/getUser", async (req, res) => {
+//   try {
+//     const request = await sendGetUserRequest()
+//     console.log(request)
+//   } catch (error) {
+//     console.log(error.message)
+//   }
+// })
+
+
+//Game Post Related APIs
+app.post("/createPost", async (req, res) => {
+  const { title, numHoles, strokes, userID } = req.body;
+  try {
+    const request = await sendCreatePostRequest(title, numHoles, strokes, userID)
+    console.log("test: ", request)
+    // console.log("success")
+  } catch (error) {
+    console.log(error)
+      res.json({result: error.message})
+  } 
+})
+
 
 app.listen(3001, () => {
   "Server started on port 3001";

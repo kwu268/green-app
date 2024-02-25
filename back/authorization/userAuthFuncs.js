@@ -39,7 +39,19 @@ const sendSignInRequest = async (email, password) => {
   }
 };
 
-module.exports = { sendCreateUserRequest, sendSignInRequest };
+const sendGetUserRequest = async () => {
+  try {
+    const { data, error  } = await supabase.auth.getUser()
+    console.log(data)
+    console.log("error: ", error)
+    return data
+
+  } catch (error) {
+      return error
+  }
+}
+
+module.exports = { sendCreateUserRequest, sendSignInRequest, sendGetUserRequest };
 
 // BEGIN
 //   INSERT INTO public.user_profile (id, email, display_name)

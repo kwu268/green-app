@@ -23,6 +23,8 @@ function ProfilePage({token}) {
 				console.error('Error fetching data:', error);
 			});
 	}
+
+  // const getUserInfo
 	
 	useEffect(() => {
 		getProfilePosts();
@@ -33,11 +35,11 @@ function ProfilePage({token}) {
     <div className="   min-h-full h-auto flex justify-center">
       <div className=" w-9/12  flex flex-col rounded-lg h-auto mt-2">
         {/* 3 divs total: profile, side info, recent posts */}
-        <div className=" flex h-[500px] w-full rounded-tl-xl rounded-tr-xl ">
+        <div className=" flex h-[350px] w-full rounded-tl-xl rounded-tr-xl ">
           {/* top half */}
           <div className="flex flex-col w-2/3 shadow-md shadow-slate-300 rounded-xl">
-            <div className="bg-gradient-to-tr from-amber-500 via-fuchsia-300 to-cyan-300 h-1/3 rounded-tl-xl rounded-tr-xl">
-              <div className="relative top-20 left-[20px] w-44 rounded-full p-2 bg-white flex">
+            <div className="bg-gradient-to-tr from-amber-500 via-fuchsia-300 to-cyan-300 h-1/2rounded-tl-xl rounded-tr-xl">
+              <div className="relative top-16 left-[20px] w-44 rounded-full p-2 bg-white flex">
                 <AvatarInfo />
               </div>
             </div>
@@ -51,9 +53,10 @@ function ProfilePage({token}) {
         </div>
 
         <div className=" bg-white w-full  my-4 shadow-md shadow-slate-300 rounded-xl min-h-[600px] "> 
-          <div className="flex mt-14 gap-14 justify-center flex-wrap ">
-          {posts && posts.map((postData) => {
-                  return <PostCard postData={postData} />;
+          <div className=" text-left text-3xl font-medium text-emerald-700 mt-10 ml-10">Posts</div>
+          <div className="flex mb-10 mt-10 gap-14 justify-center flex-wrap ">
+          {posts && posts.map((postData, i) => {
+                  return <PostCard key={i} postData={postData} />;
                 })}
           </div>
         </div>

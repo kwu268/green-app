@@ -7,12 +7,9 @@ import HomeIcon from '@mui/icons-material/Home';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import SettingsIcon from '@mui/icons-material/Settings';
 import AddBoxIcon from '@mui/icons-material/AddBox';
-import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
-import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
-import DialogContentText from '@mui/material/DialogContentText';
-import DialogTitle from '@mui/material/DialogTitle';
+
 import CreateGameForm from "./CreateGameForm";
 
 export default function Navbar({token}) {
@@ -127,8 +124,8 @@ export default function Navbar({token}) {
                 onClose={handleClose}
                 fullWidth
               >
-                <DialogContent>
-                  <CreateGameForm token={token}/>
+                <DialogContent >
+                  <CreateGameForm token={token} handleClose={handleClose}/>
                 </DialogContent>
               </Dialog>
             </motion.li>

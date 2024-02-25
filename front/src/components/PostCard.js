@@ -28,7 +28,7 @@ function PostCard( {postData} ) {
         </CardContent> 
         <div className='flex justify-end gap-4 mr-5 mt-12'>
             <div className=''>
-                <button className='text-red-500'> <FavoriteIcon className='mr-2'/></button>
+                <FavoriteIcon className='mr-2'/>
                 
                 {postData.likes}
             </div>

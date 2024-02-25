@@ -47,7 +47,7 @@ app.post("/createPost", async (req, res) => {
   const { title, numHoles, strokes, userID } = req.body;
   try {
     const request = await sendCreatePostRequest(title, numHoles, strokes, userID)
-    console.log("test: ", request)
+    res.json("created")
     // console.log("success")
   } catch (error) {
     console.log(error)

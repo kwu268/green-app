@@ -3,19 +3,15 @@
 import React, { useState } from "react"; 
 import axios from "axios";
 
-import InputLabel from '@mui/material/InputLabel';
-import MenuItem from '@mui/material/MenuItem';
-import FormControl from '@mui/material/FormControl';
-import Select from '@mui/material/Select';
+
 import TextField from '@mui/material/TextField';
 import DialogTitle from '@mui/material/DialogTitle';
-import { Button } from "@mui/material";
 
 
 const serverURL = process.env.REACT_APP_BACKEND_SERVER
 
 
-export default function CreateGameForm({token}) {
+export default function CreateGameForm({token, handleClose}) {
   const [holes, setHoles] = useState('');
 
   const handleChange = (event) => {
@@ -66,7 +62,7 @@ export default function CreateGameForm({token}) {
     }
     await axios.post(`${serverURL}/createPost`, { ...params })
     .then(response => {
-      console.log("response.data.result")
+      console.log(response.data)
       
     })
     .catch(error => {
@@ -76,7 +72,7 @@ export default function CreateGameForm({token}) {
     })
   }
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
     const [title, numHoles] = event.target
     const strokeArray = [];
@@ -87,8 +83,9 @@ export default function CreateGameForm({token}) {
     const currentHole = {par: event.target[i].value, strokes: event.target[i+1].value}
     strokeArray.push(currentHole)
     }
-    sendCreatePostRequest(title.value, numHoles.value, strokeArray, token.user.id);
-    // console.log(token.user.id)
+    await sendCreatePostRequest(title.value, numHoles.value, strokeArray, token.user.id);
+    window.location.reload();
+    handleClose()
   }
   return (
 

@@ -8,6 +8,7 @@ const serverURL = process.env.REACT_APP_BACKEND_SERVER;
 
 function ProfilePage({token}) {
   const [posts, setPosts] = useState(false)
+  //state variable to check if parameter for profile that isn't user's profile is set 
 
   const getProfilePosts = () => {
     

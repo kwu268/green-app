@@ -20,7 +20,7 @@ export default function Navbar({token}) {
     setOpen(true);
   };
 
-  const handleClose = () => {
+  const handleDialogClose = () => {
     setOpen(false);
   };
 
@@ -121,11 +121,11 @@ export default function Navbar({token}) {
               <Dialog
                 className="flex flex-col items-center"
                 open={open}
-                onClose={handleClose}
+                onClose={handleDialogClose}
                 fullWidth
               >
                 <DialogContent >
-                  <CreateGameForm token={token} handleClose={handleClose}/>
+                  <CreateGameForm token={token} handleDialogClose={handleDialogClose}/>
                 </DialogContent>
               </Dialog>
             </motion.li>

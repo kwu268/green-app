@@ -11,7 +11,7 @@ import DialogTitle from '@mui/material/DialogTitle';
 const serverURL = process.env.REACT_APP_BACKEND_SERVER
 
 
-export default function CreateGameForm({token, handleClose}) {
+export default function CreateGameForm({token, handleDialogClose}) {
   const [holes, setHoles] = useState('');
 
   const handleChange = (event) => {
@@ -67,8 +67,6 @@ export default function CreateGameForm({token, handleClose}) {
     })
     .catch(error => {
       console.log(error.message)
-      // setError(error.message);
-      // setIsLoading(false);
     })
   }
 
@@ -85,7 +83,7 @@ export default function CreateGameForm({token, handleClose}) {
     }
     await sendCreatePostRequest(title.value, numHoles.value, strokeArray, token.user.id);
     window.location.reload();
-    handleClose()
+    handleDialogClose()
   }
   return (
 

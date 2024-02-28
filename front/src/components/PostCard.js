@@ -10,7 +10,10 @@ import Dialog from '@mui/material/Dialog';
 import DialogContent from '@mui/material/DialogContent';
 import PostDialog from './PostDialog';
 
-function PostCard( {postData} ) {
+import axios from 'axios';
+
+const serverURL = process.env.REACT_APP_BACKEND_SERVER;
+function PostCard( {postData, token} ) {
 
   const randomCardImage = () => {
     const num = Math.floor(Math.random() * (5 - 1 + 1)) + 1;
@@ -19,7 +22,10 @@ function PostCard( {postData} ) {
   }
 
   const [open, setOpen] = useState(false);
-  const [postImg, setPostImg] = useState(randomCardImage())
+  const [postImg, setPostImg] = useState(randomCardImage().toString())
+  const [cardNumLikes, setCardNumLikes] = useState(0)
+  const [numComments, setNumComments] = useState(0)
+  const [fetch, setFetch] = useState(false)
 
   const handleDialogClose = () => {
     setOpen(false);
@@ -27,8 +33,37 @@ function PostCard( {postData} ) {
 
   const handleClickOpen = () => {
     setOpen(true);
+    console.log(postData)
   };
 
+  const getPostCommentsLikes = async () => {
+    axios.get(`${serverURL}/getPostCommentsLikes`, {params: {
+      post_id: postData.post_id
+    }} )
+      .then(response => {
+        setFetch(true)
+        setNumComments(response.data.comments.length)
+        setCardNumLikes(response.data.likes.length)
+        const listOfUsersLiked = {}
+        response.data.likes.forEach(like => {
+          listOfUsersLiked[like.liked_by] = true;
+          
+        });
+
+      })
+      .catch(error => {
+        console.error('Error fetching data:', error);
+      });
+  }
+
+  useEffect( () => {
+    if (fetch === false) {
+      getPostCommentsLikes()
+
+    }
+    console.log("test")
+    
+  })
 
   return (
     <motion.div
@@ -57,23 +92,22 @@ function PostCard( {postData} ) {
               <div className=''>
                   <FavoriteIcon className='mr-2'/>
                   
-                  {postData.likes}
+                  {cardNumLikes}
               </div>
-              <div>
+              <div className='flex'>
                   <CommentIcon className='mr-2'/>
-                  {postData.comments}
+                  <p className=' font-bold'>{numComments}</p>
               </div>
             </div>         
         </CardActionArea>
         <Dialog
-          className="flex flex-col items-center w-full"
+          maxWidth='xl'
+          fullWidth
           open={open}
           onClose={handleDialogClose}
-          fullWidth
-          maxWidth={"xl"}
         >
-          <DialogContent className=''>
-            <PostDialog postData={postData}/>
+          <DialogContent className={`${postImg} bg-cover`}>
+            <PostDialog postData={postData} token={token} setCardNumLikes={setCardNumLikes} setNumComments={setNumComments} postImg={postImg}/>
           </DialogContent>
         </Dialog>
       </Card>

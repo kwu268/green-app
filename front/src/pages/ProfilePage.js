@@ -17,7 +17,6 @@ function ProfilePage({token}) {
       user_id: token.user.id
     }} )
 			.then(response => {
-				console.log(response.data)
         setPosts(response.data)
 			})
 			.catch(error => {
@@ -56,8 +55,8 @@ function ProfilePage({token}) {
         <div className=" bg-white w-full  my-4 shadow-md shadow-slate-300 rounded-xl min-h-[600px] "> 
           <div className=" text-left text-3xl font-medium text-emerald-700 mt-10 ml-10">Posts</div>
           <div className="flex mb-10 mt-10 gap-14 justify-center flex-wrap ">
-          {posts && posts.map((postData, i) => {
-                  return <PostCard key={i} postData={postData} />;
+          {posts && posts.toReversed().map((postData, i) => {
+                  return <PostCard key={i} postData={postData} token={token}/>;
                 })}
           </div>
         </div>

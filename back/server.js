@@ -6,7 +6,7 @@ app.use(cors());
 app.use(express.json());
 
 const { sendCreateUserRequest, sendSignInRequest, sendGetUserRequest} = require("./authorization/userAuthFuncs");
-const { sendCreatePostRequest, sendFetchPostsRequest } = require("./posts/userPostFuncs");
+const { sendCreatePostRequest, sendFetchPostsRequest, sendCreateCommentRequest, sendFetchPostCommentsLikes, sendLikeRequest } = require("./posts/userPostFuncs");
 
 
 app.get("/", (req, res) => {
@@ -32,16 +32,6 @@ app.post("/signIn", async (req, res) => {
   console.log(result)
 });
 
-// app.get("/getUser", async (req, res) => {
-//   try {
-//     const request = await sendGetUserRequest()
-//     console.log(request)
-//   } catch (error) {
-//     console.log(error.message)
-//   }
-// })
-
-
 //Game Post Related APIs
 app.post("/createPost", async (req, res) => {
   const { title, numHoles, strokes, userID } = req.body;
@@ -65,6 +55,39 @@ app.get("/getProfilePost", async (req, res) => {
   }
 })
 
+app.post("/createComment", async (req, res) => {
+  const { comment, userID, postID} = req.body;
+  try {
+    // console.log(comment)
+    // console.log(userID)
+    // console.log(postID)
+    const request = await sendCreateCommentRequest(comment, userID, postID) 
+    res.json("comment created")
+  } catch (error) {
+    
+  }
+})
+
+app.get("/getPostCommentsLikes", async (req, res) => {
+  const { post_id } = req.query;
+  try {
+    const posts = await sendFetchPostCommentsLikes(post_id);
+    res.json(posts );
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+})
+
+app.post("/sendLikeRequest", async (req, res) => {
+  const { user_id, post_id, method} = req.body;
+
+  try {
+    const request = await sendLikeRequest(user_id, post_id, method)
+    res.json(request)
+  } catch (error) {
+    
+  }
+})
 
 app.listen(3001, () => {
   "Server started on port 3001";

@@ -68,7 +68,6 @@ const sendFetchPostCommentsLikes = async (post_id) => {
       .from("user_likes")
       .select()
       .eq("post_id", post_id);
-      console.log(likes)
 
     return { comments: comments.data, likes: likes.data };
   } catch (error) {}
@@ -84,8 +83,6 @@ const sendLikeRequest = async (user_id, post_id, method) => {
           liked_by: user_id,
         })
         .select();
-        console.log(data)
-        console.log(error)
         return data;
     }
     else {

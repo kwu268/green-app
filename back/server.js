@@ -7,6 +7,7 @@ app.use(express.json());
 
 const { sendCreateUserRequest, sendSignInRequest, sendGetUserRequest} = require("./authorization/userAuthFuncs");
 const { sendCreatePostRequest, sendFetchPostsRequest, sendCreateCommentRequest, sendFetchPostCommentsLikes, sendLikeRequest } = require("./posts/userPostFuncs");
+const { sendFetchProfileInfo, sendAboutMe } = require("./userInfo/accountFuncs")
 
 
 app.get("/", (req, res) => {
@@ -18,6 +19,7 @@ app.get("/", (req, res) => {
 app.post("/createUser", async (req, res) => {
   const { email, password, display_name } = req.body;
   try {
+    console.log("here")
     const request = await sendCreateUserRequest(email, password, display_name);
     res.json({ result: "created" });
   } catch (error) {
@@ -32,13 +34,32 @@ app.post("/signIn", async (req, res) => {
   console.log(result)
 });
 
+//User Profile Information API
+
+app.get("/getProfileInfo", async (req, res) => {
+  const { user_id } = req.query
+  try {
+    console.log(user_id)
+    const result = await sendFetchProfileInfo(user_id)
+    res.json(result)
+  } catch (error) {
+    
+  }
+})
+
+app.post("/sendAboutMe", async (req, res) => {
+  const { about_me, user_id} = req.body
+  console.log(about_me)
+  console.log(user_id)
+  const result = await sendAboutMe(about_me, user_id)
+  res.json("updated about me")
+})
 //Game Post Related APIs
 app.post("/createPost", async (req, res) => {
   const { title, numHoles, strokes, userID } = req.body;
   try {
     const request = await sendCreatePostRequest(title, numHoles, strokes, userID)
     res.json("created")
-    // console.log("success")
   } catch (error) {
     console.log(error)
       res.json({result: error.message})
@@ -58,9 +79,6 @@ app.get("/getProfilePost", async (req, res) => {
 app.post("/createComment", async (req, res) => {
   const { comment, userID, postID} = req.body;
   try {
-    // console.log(comment)
-    // console.log(userID)
-    // console.log(postID)
     const request = await sendCreateCommentRequest(comment, userID, postID) 
     res.json("comment created")
   } catch (error) {

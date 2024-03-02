@@ -56,14 +56,17 @@ function PostCard( {postData, token} ) {
       });
   }
 
+  
   useEffect( () => {
+    //looking into useref for the fetch state variable 
+    //useref wont cause re-render when the state is changed, persists over rerenders (value of a useRef variable remains the same on re-render)
+    //useState causes rerender whenever staevariable is set to new value --> useffect infifntaly runs 
     if (fetch === false) {
       getPostCommentsLikes()
-
     }
-    console.log("test")
-    
-  })
+  }, [])
+
+ 
 
   return (
     <motion.div
@@ -79,11 +82,11 @@ function PostCard( {postData, token} ) {
                     {postData.title}
               </Typography>
             </div>
-            <div className='flex flex-col'>
-              <Typography variant="body2" color="text.secondary">
+            <div className='flex flex-col items-center'>
+              <Typography variant="body2" color="text.secondary" className='font-bold text-lg'>
                   Total Par: {postData.game_details.strokes.reduce( (totalPar, strokesArray) => totalPar + parseInt(strokesArray.par, 10), 0 ) }
               </Typography>
-              <Typography variant="body2" color="text.secondary">
+              <Typography variant="body2" color="text.secondary" className='font-bold text-lg'>
                   Total Strokes: {postData.game_details.strokes.reduce( (totalStrokes, strokesArray) => totalStrokes + parseInt(strokesArray.strokes, 10), 0 ) }
               </Typography>
             </div>
@@ -107,7 +110,7 @@ function PostCard( {postData, token} ) {
           onClose={handleDialogClose}
         >
           <DialogContent className={`${postImg} bg-cover`}>
-            <PostDialog postData={postData} token={token} setCardNumLikes={setCardNumLikes} setNumComments={setNumComments} postImg={postImg}/>
+            <PostDialog postData={postData} token={token} setCardNumLikes={setCardNumLikes} setNumComments={setNumComments} />
           </DialogContent>
         </Dialog>
       </Card>

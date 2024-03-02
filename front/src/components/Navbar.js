@@ -9,12 +9,18 @@ import SettingsIcon from '@mui/icons-material/Settings';
 import AddBoxIcon from '@mui/icons-material/AddBox';
 import Dialog from '@mui/material/Dialog';
 import DialogContent from '@mui/material/DialogContent';
+import LogoutIcon from '@mui/icons-material/Logout';
 
 import CreateGameForm from "./CreateGameForm";
 
-export default function Navbar({token}) {
+export default function Navbar({token, setToken}) {
   const [show, setShow] = useState(false);
   const [open, setOpen] = useState(false);
+
+  const logOut = () => {
+    setToken(false)
+    sessionStorage.removeItem('token')
+  }
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -76,8 +82,8 @@ export default function Navbar({token}) {
         className=" top-0 left-0 bottom-0 fixed w-[245px] "
       >
         {/* inner nav */}
-        <div className=" absolute top-0 left-0 bottom-0 w-full bg-white ">
-          <motion.ul className="flex flex-col mt-20 gap-2" variants={variants_items}>
+        <div className=" absolute top-0 left-0 bottom-0 w-full bg-white flex flex-col">
+          <motion.ul className="flex flex-col mt-20 gap-2 h-[90%]" variants={variants_items} >
             {/* Wrap each Link with motion.li and apply the itemVariants */}
             <motion.li
               variants={variants_items}
@@ -128,6 +134,21 @@ export default function Navbar({token}) {
                   <CreateGameForm token={token} handleDialogClose={handleDialogClose}/>
                 </DialogContent>
               </Dialog>
+            </motion.li>
+          </motion.ul>
+          <motion.ul className="mb-3" variants={variants_items}>
+            {/* Wrap each Link with motion.li and apply the itemVariants */}
+            <motion.li
+              variants={variants_items}
+              whileHover={{ scale: 1.1 }}
+              whileTap={{ scale: 0.95 }}
+              className="flex items-center w-full pl-4 gap-2 "
+              
+            >
+              <LogoutIcon/>
+              <Link to="/" className="block py-2 w-full rounded-md " onClick={logOut}>
+                Logout
+              </Link>
             </motion.li>
           </motion.ul>
         </div>

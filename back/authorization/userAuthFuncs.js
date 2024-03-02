@@ -1,7 +1,8 @@
 const supabase = require("../supabaseClient");
 
 const sendCreateUserRequest = async (email, password, display_name) => {
-  await supabase.auth
+  try {
+    const { data, error } = await supabase.auth
     .signUp({
       email: email,
       password: password,
@@ -11,16 +12,12 @@ const sendCreateUserRequest = async (email, password, display_name) => {
         },
       },
     })
-    .then((data) => {
-      if (data.error) {
-        throw new Error(data.error);
-      }
-      console.log("here worked");
-      return 0;
-    })
-    .catch((error) => {
-      throw error;
-    });
+    console.log("1")
+    console.log(data)
+    console.log(error)
+  } catch (error) {
+    
+  }
 };
 
 const sendSignInRequest = async (email, password) => {

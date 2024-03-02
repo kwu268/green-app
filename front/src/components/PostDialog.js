@@ -5,7 +5,7 @@ import axios from 'axios';
 
 const serverURL = process.env.REACT_APP_BACKEND_SERVER;
 
-function PostDialog({postData, token, setCardNumLikes, setNumComments, postImg}) {
+function PostDialog({postData, token, setCardNumLikes, setNumComments}) {
     const [like, setLike] = useState("text-white")
     const [comments, setComments] = useState(false)
     const [numLikes, setNumLikes] = useState(0)
@@ -109,15 +109,15 @@ function PostDialog({postData, token, setCardNumLikes, setNumComments, postImg})
             <TableData postData={postData}/>
         </div>
         <div className=' flex flex-col border-2 w-2/5 h-full bg-white rounded-lg'>
-            <div className=' h-[85%]'>
+            <div className=' h-[90%] pl-3 pt-3 overflow-y-auto border-2'>
                 {comments && comments.map((commentData, i) => {
                   return <div key={i} className='flex gap-2'>
-                    <div className='font-bold'>{commentData.user_profile.display_name}</div>
+                    <div className='font-bold'>{commentData.user_profile.display_name.display_name}</div>
                     <div>{commentData.comment_string}</div>
                   </div>
                 })}
             </div>
-            <div className='h-[12%] flex items-end mb-2 gap-1'>
+            <div className='h-[5%] flex items-end mb-2 gap-1'>
                 <button onClick={likePost}><FavoriteIcon className={`transition-colors ease-in-out delay-150 text-2xl stroke-black ${like}`} /></button>
                 <div className=' text-lg'>
                     {numLikes}

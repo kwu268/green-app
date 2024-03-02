@@ -11,23 +11,25 @@ import Navbar from "./components/Navbar.js";
 function App() {
   
   const [token, setToken] = useState(false);
-
+ 
   if (token) {
     sessionStorage.setItem('token', JSON.stringify(token))
   }
 
   useEffect( () => {
+
     if (sessionStorage.getItem('token')) {
       const tokenData = JSON.parse(sessionStorage.getItem('token'));
       setToken(tokenData)
     }
   }, [])
 
+  
 
   if (token !== false) {
     return (
-      <div className="bg-gradient-to-b from-green-200 to-green-200 w-screen min-h-screen h-auto flex flex-col">
-        {token && <Navbar token={token}/>}
+      <div className="relative bg-gradient-to-b from-green-200 to-green-200 w-full min-h-screen h-auto flex flex-col">
+        {token && <Navbar token={token} setToken={setToken}/>}
   
           <Routes>
             <Route path="/sign-in" element={<SignInPage setToken={setToken}/>} />

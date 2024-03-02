@@ -4,16 +4,13 @@ import { useNavigate } from 'react-router-dom'
 
 const serverURL = process.env.REACT_APP_BACKEND_SERVER
 
-function CreateAccountForm() {
+function CreateAccountForm({setToken}) {
   // Consts
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
 
   const navigate = useNavigate()
 
-  const navToVerifyPage = (email) => {
-    navigate('/account-created', { state: { data: email } })
-  }
 
 
 
@@ -28,7 +25,8 @@ function CreateAccountForm() {
     .then(response => {
       console.log(response.data.result)
       if (response.data.result == "created") {
-        navToVerifyPage(email)
+        setToken(response.data);
+        navigate('/')
       }
       setIsLoading(false);
     })

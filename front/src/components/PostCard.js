@@ -1,4 +1,4 @@
-import  React, {useState, useEffect} from 'react';
+import  React, {useState, useEffect, useRef} from 'react';
 import Card from '@mui/material/Card';
 import { motion } from "framer-motion";
 
@@ -12,61 +12,28 @@ import PostDialog from './PostDialog';
 
 import axios from 'axios';
 
+
+
 const serverURL = process.env.REACT_APP_BACKEND_SERVER;
-function PostCard( {postData, token} ) {
+function PostCard( {postData, token, onActionComplete} ) {
 
   const randomCardImage = () => {
     const num = Math.floor(Math.random() * (5 - 1 + 1)) + 1;
     return "bg-card" + num
     
   }
-
   const [open, setOpen] = useState(false);
   const [postImg, setPostImg] = useState(randomCardImage().toString())
-  const [cardNumLikes, setCardNumLikes] = useState(0)
-  const [numComments, setNumComments] = useState(0)
-  const [fetch, setFetch] = useState(false)
-
+  
   const handleDialogClose = () => {
     setOpen(false);
   };
 
   const handleClickOpen = () => {
     setOpen(true);
-    console.log(postData)
   };
 
-  const getPostCommentsLikes = async () => {
-    axios.get(`${serverURL}/getPostCommentsLikes`, {params: {
-      post_id: postData.post_id
-    }} )
-      .then(response => {
-        setFetch(true)
-        setNumComments(response.data.comments.length)
-        setCardNumLikes(response.data.likes.length)
-        const listOfUsersLiked = {}
-        response.data.likes.forEach(like => {
-          listOfUsersLiked[like.liked_by] = true;
-          
-        });
 
-      })
-      .catch(error => {
-        console.error('Error fetching data:', error);
-      });
-  }
-
-  
-  useEffect( () => {
-    //looking into useref for the fetch state variable 
-    //useref wont cause re-render when the state is changed, persists over rerenders (value of a useRef variable remains the same on re-render)
-    //useState causes rerender whenever staevariable is set to new value --> useffect infifntaly runs 
-    if (fetch === false) {
-      getPostCommentsLikes()
-    }
-  }, [])
-
- 
 
   return (
     <motion.div
@@ -95,11 +62,11 @@ function PostCard( {postData, token} ) {
               <div className=''>
                   <FavoriteIcon className='mr-2'/>
                   
-                  {cardNumLikes}
+                  {postData.user_likes.length}
               </div>
               <div className='flex'>
                   <CommentIcon className='mr-2'/>
-                  <p className=' font-bold'>{numComments}</p>
+                  <p className=' font-bold'>{postData.user_comments.length}</p>
               </div>
             </div>         
         </CardActionArea>
@@ -110,7 +77,7 @@ function PostCard( {postData, token} ) {
           onClose={handleDialogClose}
         >
           <DialogContent className={`${postImg} bg-cover`}>
-            <PostDialog postData={postData} token={token} setCardNumLikes={setCardNumLikes} setNumComments={setNumComments} />
+            <PostDialog postData={postData} token={token} onActionComplete={onActionComplete}/>
           </DialogContent>
         </Dialog>
       </Card>

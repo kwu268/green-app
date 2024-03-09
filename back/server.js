@@ -6,7 +6,7 @@ app.use(cors());
 app.use(express.json());
 
 const { sendCreateUserRequest, sendSignInRequest, sendGetUserRequest} = require("./authorization/userAuthFuncs");
-const { sendCreatePostRequest, sendFetchPostsRequest, sendCreateCommentRequest, sendFetchPostCommentsLikes, sendLikeRequest } = require("./posts/userPostFuncs");
+const { sendCreatePostRequest, sendFetchPostsRequest, sendCreateCommentRequest, getIsLiked, sendLikeRequest } = require("./posts/userPostFuncs");
 const { sendFetchProfileInfo, sendAboutMe } = require("./userInfo/accountFuncs")
 
 
@@ -86,14 +86,15 @@ app.post("/createComment", async (req, res) => {
   }
 })
 
-app.get("/getPostCommentsLikes", async (req, res) => {
-  const { post_id } = req.query;
+app.get("/getIsLiked", async (req, res) => {
+  const { user_id, post_id } = req.query
+
   try {
-    const posts = await sendFetchPostCommentsLikes(post_id);
-    res.json(posts );
+    const request = await getIsLiked(user_id, post_id)
+    res.json(request)
   } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
+    
+  } 
 })
 
 app.post("/sendLikeRequest", async (req, res) => {

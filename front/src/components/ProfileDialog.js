@@ -17,7 +17,7 @@ function ProfileDialog({handleDialogClose}) {
     }
     await axios.post(`${serverURL}/sendAboutMe`, { ...params })
     .then(response => {
-      console.log(response.data)
+      console.log("got about me")
       
     })
     .catch(error => {

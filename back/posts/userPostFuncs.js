@@ -10,7 +10,6 @@ const sendCreatePostRequest = async (title, numHoles, strokes, userID) => {
         strokes: strokes,
       },
     });
-    console.log(data);
     return data;
   } catch (error) {
     return error;
@@ -21,9 +20,35 @@ const sendFetchPostsRequest = async (user_id) => {
   try {
     const response = await supabase
       .from("user_posts")
-      .select()
+      .select(
+        `post_id,
+      created_at,
+      created_by,
+      game_details,
+      title,
+      num_holes,
+      user_likes (
+        is_liked,
+        liked_by
+      ),
+
+      user_comments (
+        comment_string,
+        user_id,
+        user_profile (
+          display_name
+        )
+      )`
+      )
       .eq("created_by", user_id);
-    return response.data;
+      
+      const postData = response.data.map( post => {
+        return {
+          ...post, 
+          user_likes: post.user_likes.filter( like => like.is_liked)
+        }
+      })
+    return postData;
   } catch (error) {}
 };
 
@@ -38,62 +63,49 @@ const sendCreateCommentRequest = async (comment, user_id, post_id) => {
       })
       .select();
 
-    console.log(data);
-    console.log(error);
+
     return data;
   } catch (error) {
     return error;
   }
 };
 
-const sendFetchPostCommentsLikes = async (post_id) => {
+const sendLikeRequest = async (user_id, post_id, method) => {
   try {
-    const comments = await supabase
-      .from("user_comments")
-      .select(
-        `
-      comment_id,
-      comment_string,
-      created_at,
-      post_id,
-      user_id,
-      user_profile (
-        display_name
-      )
-    `
-      )
-      .eq("post_id", post_id);
-
-    const likes = await supabase
-      .from("user_likes")
-      .select()
-      .eq("post_id", post_id);
-
-    return { comments: comments.data, likes: likes.data };
+    if (method == "like") {
+      const { data, error } = await supabase
+        .from("user_likes")
+        .upsert({ is_liked: true, post_id: post_id, liked_by: user_id }, { onConflict: ["post_id", "liked_by"] })
+        .eq("liked_by", user_id)
+        .eq("liked_by", post_id)
+        .select();
+      return data;
+    } else {
+      const { data, error } = await supabase
+        .from("user_likes")
+        .update( {is_liked: false })
+        .eq("liked_by", user_id)
+        .eq("post_id", post_id)
+        .select();
+      console.log(error);
+      return data;
+    }
   } catch (error) {}
 };
 
-const sendLikeRequest = async (user_id, post_id, method) => {
+const getIsLiked = async (user_id, post_id) => {
   try {
-    if (method === "like") {
-      const { data, error } = await supabase
-        .from("user_likes")
-        .insert({
-          post_id: post_id,
-          liked_by: user_id,
-        })
-        .select();
-        return data;
-    }
-    else {
-      const { data, error } = await supabase
+    const { data, error } = await supabase
       .from("user_likes")
-      .delete()
-      .eq('liked_by', user_id)
-      .select();
-      console.log(error)
-      return data;
-    }
+      .select("is_liked")
+      .eq("liked_by", user_id)
+      .eq("post_id", post_id)
+      if (data.length == 0 || !(data[0].is_liked)) {
+        return false
+      }
+      else {
+        return true
+      }
 
   } catch (error) {}
 };
@@ -101,6 +113,6 @@ module.exports = {
   sendCreatePostRequest,
   sendFetchPostsRequest,
   sendCreateCommentRequest,
-  sendFetchPostCommentsLikes,
   sendLikeRequest,
+  getIsLiked
 };

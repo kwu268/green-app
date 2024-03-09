@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import axios from "axios";
 
 import AvatarInfo from "../components/AvatarInfo.js";
@@ -16,11 +16,11 @@ function ProfilePage({ token }) {
   const [numFollowers, setNumFollowers] = useState(0);
   const [numFollowing, setNumFollowing] = useState(0);
   const [open, setOpen] = useState(false);
+  let hasFetched = useRef(false)
 
 
   const handleDialogClose = () => {
     setOpen(false);
-    console.log("here")
   };
 
   const handleClickOpen = () => {
@@ -28,7 +28,6 @@ function ProfilePage({ token }) {
   };
 
   const getProfilePosts = () => {
-    // console.log(params)
     axios
       .get(`${serverURL}/getProfilePost`, {
         params: {
@@ -36,6 +35,7 @@ function ProfilePage({ token }) {
         },
       })
       .then((response) => {
+        hasFetched.current = true
         setPosts(response.data);
       })
       .catch((error) => {
@@ -58,12 +58,17 @@ function ProfilePage({ token }) {
       });
   };
 
-  // const getUserInfo
+  const refreshPosts = () => {
+    getProfilePosts();
+  };
 
   useEffect(() => {
-    getUserInfo();
-    getProfilePosts();
-  }, []);
+    if (!hasFetched.current) {
+      getProfilePosts();
+      getUserInfo();
+    }
+    
+  }, );
   
 
   return (
@@ -142,7 +147,7 @@ function ProfilePage({ token }) {
           >
             {posts &&
               posts.toReversed().map((postData, i) => {
-                return <PostCard key={i} postData={postData} token={token} />;
+                return <PostCard key={i} postData={postData} token={token} onActionComplete={refreshPosts}/>;
               })}
           </motion.div>
         </div>

@@ -98,10 +98,11 @@ app.get("/getIsLiked", async (req, res) => {
 })
 
 app.post("/sendLikeRequest", async (req, res) => {
-  const { user_id, post_id, method} = req.body;
+  const { user_id, post_id, isLiked} = req.body;
+  console.log("isLike: ", isLiked)
 
   try {
-    const request = await sendLikeRequest(user_id, post_id, method)
+    const request = await sendLikeRequest(user_id, post_id, isLiked)
     res.json(request)
   } catch (error) {
     

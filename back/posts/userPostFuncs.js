@@ -29,7 +29,7 @@ const sendFetchPostsRequest = async (user_id) => {
       num_holes,
       user_likes (
         is_liked,
-        liked_by
+        user_id
       ),
 
       user_comments (
@@ -70,21 +70,21 @@ const sendCreateCommentRequest = async (comment, user_id, post_id) => {
   }
 };
 
-const sendLikeRequest = async (user_id, post_id, method) => {
+const sendLikeRequest = async (user_id, post_id, isLiked) => {
   try {
-    if (method == "like") {
+    if (isLiked == true) {
       const { data, error } = await supabase
         .from("user_likes")
-        .upsert({ is_liked: true, post_id: post_id, liked_by: user_id }, { onConflict: ["post_id", "liked_by"] })
-        .eq("liked_by", user_id)
-        .eq("liked_by", post_id)
+        .upsert({ is_liked: true, post_id: post_id, user_id: user_id }, { onConflict: ["post_id", "user_id"] })
+        .eq("user_id", user_id)
+        .eq("post_id", post_id)
         .select();
       return data;
     } else {
       const { data, error } = await supabase
         .from("user_likes")
         .update( {is_liked: false })
-        .eq("liked_by", user_id)
+        .eq("user_id", user_id)
         .eq("post_id", post_id)
         .select();
       console.log(error);
@@ -98,7 +98,7 @@ const getIsLiked = async (user_id, post_id) => {
     const { data, error } = await supabase
       .from("user_likes")
       .select("is_liked")
-      .eq("liked_by", user_id)
+      .eq("user_id", user_id)
       .eq("post_id", post_id)
       if (data.length == 0 || !(data[0].is_liked)) {
         return false

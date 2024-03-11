@@ -1,54 +1,17 @@
 import React, { useEffect, useRef, useState } from "react";
 import TableData from "./TableData";
 import FavoriteIcon from "@mui/icons-material/Favorite";
-import axios from "axios";
 
-import { getPostCommentsLikes } from "./PostCard";
+import { sendLikeRequest, postComment, getIsLiked } from "../api/postApi";
 
-const serverURL = process.env.REACT_APP_BACKEND_SERVER;
 
 function PostDialog({ postData, token, onActionComplete }) {
-  const [like, setLike] = useState(false);
-
-
-  const sendLikeRequest = async (user_id, post_id, method) => {
-    const params = {
-      user_id: user_id,
-      post_id: post_id,
-      method: method,
-    };
-    console.log("method: ", method)
-    await axios
-      .post(`${serverURL}/sendLikeRequest`, { ...params })
-      .then((response) => {
-        console.log(response);
-      })
-      .catch((error) => {
-        console.log(error.message);
-      });
-  };
+  const [isLiked, setIsLiked] = useState(false);
 
   const likePost = async () => {
-    var method;
-    if (!like) method = "like";
-    else method = "dislike";
-    await sendLikeRequest(token.user.id, postData.post_id, method)
-    await onActionComplete()
-    await getIsLiked(token.user.id, postData.post_id)
-  };
-
-  const postComment = async (comment, user_id, postID) => {
-    const params = {
-      comment: comment,
-      userID: user_id,
-      postID: postID,
-    };
-    await axios
-      .post(`${serverURL}/createComment`, { ...params })
-      .then((response) => {})
-      .catch((error) => {
-        console.log(error.message);
-      });
+    await sendLikeRequest(token.user.id, postData.post_id, !isLiked);
+    await onActionComplete();
+    await getIsLiked(token.user.id, postData.post_id);
   };
 
   const handleComment = async (event) => {
@@ -59,23 +22,14 @@ function PostDialog({ postData, token, onActionComplete }) {
     comment.value = "";
   };
 
-  const getIsLiked = async (user_id, post_id) => {
-    console.log("here gettign likes")
-    await axios
-      .get(`${serverURL}/getIsLiked`, {
-        params: {
-          user_id: user_id,
-          post_id: post_id,
-        },
-      })
-      .then((response) => {
-        setLike(response.data);
-      })
-      .catch((error) => {});
+  const checkIsLiked = async () => {
+    try {
+      setIsLiked(await getIsLiked(token.user.id, postData.post_id));
+    } catch (error) {}
   };
+
   useEffect(() => {
-    console.log("useEffect")
-    getIsLiked(token.user.id, postData.post_id);
+    checkIsLiked();
   });
 
   return (
@@ -99,11 +53,11 @@ function PostDialog({ postData, token, onActionComplete }) {
         </div>
         <div className=" flex items-end mb-2 gap-1">
           <button onClick={likePost}>
-            {like === true ? (
-              <FavoriteIcon className="transition-colors ease-in-out delay-150 text-2xl stroke-black text-red-500" />
-            ) : (
-              <FavoriteIcon className="transition-colors ease-in-out delay-150 text-2xl stroke-black text-white" />
-            )}
+            <FavoriteIcon
+              className={`transition-colors ease-in-out  text-2xl stroke-black ${
+                isLiked === true ? "text-red-500" : "text-white"
+              }`}
+            />
           </button>
           <div className=" text-lg">{postData.user_likes.length}</div>
         </div>

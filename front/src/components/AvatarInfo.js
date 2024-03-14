@@ -31,11 +31,11 @@ function stringAvatar(name) {
   };
 }
 
-export default function AvatarInfo() {
+export default function AvatarInfo({displayName, size}) {
   return (
-    <Stack >
-      <Avatar {...stringAvatar('Kelvin Wu')} className='w-40 h-40 '/>
-
+    <Stack className=''>
+      {displayName ?  <Avatar {...stringAvatar('Kelvin Wu')} className={`${size}`} /> :  <Avatar  className={`${size}`}/>}
+    
     </Stack>
   );
 }

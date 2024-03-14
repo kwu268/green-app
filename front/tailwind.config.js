@@ -28,6 +28,7 @@ module.exports = {
         'card3': "url('/src/images/card/card3.jpg')",
         'card4': "url('/src/images/card/card4.jpg')",
         'card5': "url('/src/images/card/card5.jpg')",
+        'home-screen': "url('/src/images/banner.png')"
       }
       
 

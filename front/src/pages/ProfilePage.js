@@ -1,4 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
+import { useParams } from 'react-router-dom';
+
 import axios from "axios";
 
 import AvatarInfo from "../components/AvatarInfo.js";
@@ -16,14 +18,15 @@ import { getProfilePosts, getUserInfo } from "../api/profileApi.js";
 //rename in backend and supabase liked_by to user_id  x
 //changed sendLikeRequest param "method" from a string to boolean and changed in backend as well x
 
-const serverURL = process.env.REACT_APP_BACKEND_SERVER;
 
-const ProfilePage = ({ token }) => {
+const ProfilePage = ({ token, ownProfile }) => {
   const [posts, setPosts] = useState(false);
   const [userInfo, setUserInfo] = useState(false);
   const [numFollowers, setNumFollowers] = useState(0);
   const [numFollowing, setNumFollowing] = useState(0);
   const [open, setOpen] = useState(false);
+  const { username } = useParams();
+  console.log(username)
 
   const handleDialogClose = () => {
     setOpen(false);
@@ -60,11 +63,18 @@ const ProfilePage = ({ token }) => {
   return (
     <div className="min-h-full h-auto flex justify-center">
       <div className=" w-9/12  flex flex-col rounded-lg h-auto mt-2">
-        <div className=" flex h-[300px] w-full rounded-tl-xl rounded-tr-xl ">
+        <motion.div 
+        initial={{ opacity: 0, y: 50 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{
+          opacity: { duration: 3 }, // Duration of 1 second for the opacity transition
+          y: { duration: 1.5 },
+        }}
+        className=" flex h-[300px] w-full rounded-tl-xl rounded-tr-xl ">
           <div className="flex flex-col w-2/3 shadow-md shadow-slate-300 rounded-xl">
             <div className="bg-gradient-to-tr from-amber-500 via-fuchsia-300 to-cyan-300 rounded-tl-xl rounded-tr-xl ">
               <div className="relative top-16 left-[20px] w-44 rounded-full p-2 bg-white flex">
-                <AvatarInfo />
+                <AvatarInfo displayName={userInfo ? userInfo.display_name.display_name: null} size={"w-40 h-40 "}/>
               </div>
             </div>
             <div className="bg-white  rounded-bl-xl rounded-br-xl h-1/2  flex justify-between">
@@ -116,9 +126,15 @@ const ProfilePage = ({ token }) => {
               <p className="m-1">{userInfo && userInfo.about_me.about_me}</p>
             </div>
           </div>
-        </div>
+        </motion.div>
 
-        <div className="bg-white rounded-xl min-h-[600px] mt-4">
+        <motion.div 
+        initial={{ opacity: 0, y: 50 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{
+          opacity: { duration: 3 }, // Duration of 1 second for the opacity transition
+          y: { duration: 1.5 },
+        }} className="bg-white rounded-xl min-h-[600px] mt-4">
           <div className=" text-left text-2xl font-medium  my-10 ml-16">
             Posts
           </div>
@@ -145,7 +161,7 @@ const ProfilePage = ({ token }) => {
                 );
               })}
           </motion.div>
-        </div>
+        </motion.div>
       </div>
     </div>
   );

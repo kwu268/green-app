@@ -37,6 +37,7 @@ function App() {
             {token && <Route path="/profile" element={<ProfilePage token={token}/>} />}
             {token && <Route path="/home" element={<HomePage token={token}/>}/>}
             {token && <Route path="/" element={<HomePage token={token}/>} />}
+            <Route path="/:username" element={token ? <ProfilePage token={token} ownProfile={false} /> : <SignInPage setToken={setToken}/>} /> {/* Dynamic route for other users' profiles */}
           </Routes>
       </div>
     );

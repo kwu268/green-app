@@ -44,3 +44,22 @@ export const getIsLiked = async (user_id, post_id) => {
     return response.data
   } catch (error) {}
 };
+
+
+export const createPost = async (title, numHoles, strokes, userID) => {
+  // setIsLoading(true);
+  const params = {
+    title: title,
+    numHoles: numHoles,
+    strokes: strokes,
+    userID: userID
+  }
+  await axios.post(`${serverURL}/createPost`, { ...params })
+  .then(response => {
+    console.log(response.data)
+    
+  })
+  .catch(error => {
+    console.log(error.message)
+  })
+}

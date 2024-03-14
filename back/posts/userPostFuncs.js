@@ -27,11 +27,13 @@ const sendFetchPostsRequest = async (user_id) => {
       game_details,
       title,
       num_holes,
+      user_profile!user_posts_created_by_fkey (
+        display_name
+      ),
       user_likes (
         is_liked,
         user_id
       ),
-
       user_comments (
         comment_string,
         user_id,
@@ -40,8 +42,7 @@ const sendFetchPostsRequest = async (user_id) => {
         )
       )`
       )
-      .eq("created_by", user_id);
-      
+      .eq("created_by", user_id);      
       const postData = response.data.map( post => {
         return {
           ...post, 
@@ -62,8 +63,6 @@ const sendCreateCommentRequest = async (comment, user_id, post_id) => {
         user_id: user_id,
       })
       .select();
-
-
     return data;
   } catch (error) {
     return error;
@@ -106,7 +105,6 @@ const getIsLiked = async (user_id, post_id) => {
       else {
         return true
       }
-
   } catch (error) {}
 };
 module.exports = {

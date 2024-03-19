@@ -140,7 +140,7 @@ const ProfilePage = ({  ownProfile }) => {
             Posts
           </div>
           <motion.div
-            className="flex mb-10 gap-14 justify-center flex-wrap w-auto h-auto border-black border-2"
+            className="flex mb-10 gap-14 justify-center flex-wrap w-auto h-auto"
             initial={{ opacity: 0, y: 50 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{

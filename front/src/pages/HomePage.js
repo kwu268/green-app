@@ -114,7 +114,7 @@ function HomePage() {
             Recent Posts
           </div>
           <motion.div
-            className="flex mb-10 gap-14 justify-center flex-wrap w-full h-auto border-black border-2"
+            className="flex mb-10 gap-14 justify-center flex-wrap w-full h-auto "
             initial={{ opacity: 0, y: 50 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{

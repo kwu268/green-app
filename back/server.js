@@ -6,7 +6,7 @@ app.use(cors());
 app.use(express.json());
 
 const { sendCreateUserRequest, sendSignInRequest, sendGetUserRequest} = require("./authorization/userAuthFuncs");
-const { sendCreatePostRequest, sendFetchPostsRequest, sendCreateCommentRequest, getIsLiked, sendLikeRequest } = require("./posts/userPostFuncs");
+const { sendCreatePostRequest, sendFetchPostsRequest, sendCreateCommentRequest, getIsLiked, sendLikeRequest, getFollowedPosts } = require("./posts/userPostFuncs");
 const { sendFetchProfileInfo, sendAboutMe } = require("./userInfo/accountFuncs")
 
 
@@ -64,6 +64,16 @@ app.post("/createPost", async (req, res) => {
     console.log(error)
       res.json({result: error.message})
   } 
+})
+
+app.get("/getFollowedPost", async (req, res) => {
+  const {user_id} = req.query;
+  try {
+    const result = await getFollowedPosts(user_id)
+    res.json(result)
+  } catch (error) {
+    
+  }
 })
 
 app.get("/getProfilePost", async (req, res) => {

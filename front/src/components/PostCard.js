@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState } from "react";
 import Card from "@mui/material/Card";
 import { motion } from "framer-motion";
 
@@ -12,9 +12,7 @@ import PostDialog from "./PostDialog";
 import CardContent from "@mui/material/CardContent";
 import AvatarInfo from "../components/AvatarInfo.js";
 
-import axios from "axios";
 
-const serverURL = process.env.REACT_APP_BACKEND_SERVER;
 function PostCard({ postData, token, onActionComplete }) {
   const randomCardImage = () => {
     const num = Math.floor(Math.random() * (5 - 1 + 1)) + 1;

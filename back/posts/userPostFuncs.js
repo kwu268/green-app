@@ -107,10 +107,63 @@ const getIsLiked = async (user_id, post_id) => {
       }
   } catch (error) {}
 };
+
+const getFollowedUsers = async (user_id) => {
+  console.log(user_id)
+  try {
+    const {data, error} = await supabase
+    .from("user_follow")
+    .select("following_id")
+    .eq("user_id", user_id)
+    const followedUsers = data.map (follow => follow.following_id)
+    return followedUsers
+  } catch (error) {
+    
+  }
+}
+
+const getFollowedPosts = async (user_id) => {
+  try {
+    const followedUsers =  await getFollowedUsers(user_id)
+    console.log(followedUsers)
+    const {data, error} = await supabase
+      .from("user_posts")
+      .select(
+        `post_id,
+      created_at,
+      created_by,
+      game_details,
+      title,
+      num_holes,
+      user_profile!user_posts_created_by_fkey (
+        display_name
+      ),
+      user_likes (
+        is_liked,
+        user_id
+      ),
+      user_comments (
+        comment_string,
+        user_id,
+        user_profile (
+          display_name
+        )
+      )`
+      )
+      .in('created_by', followedUsers)
+      console.log("loading2")
+
+      console.log(data)
+    return data
+  } catch (error) {
+    
+  }
+}
 module.exports = {
   sendCreatePostRequest,
   sendFetchPostsRequest,
   sendCreateCommentRequest,
   sendLikeRequest,
-  getIsLiked
+  getIsLiked,
+  getFollowedPosts,
 };

@@ -34,8 +34,8 @@ function App() {
           <Routes>
             <Route path="/sign-in" element={<SignInPage setToken={setToken}/>} />
             <Route path="/account-created" element={<AccountCreatedPage />} />
-            {token && <Route path="/profile" element={<ProfilePage token={token}/>} />}
-            {token && <Route path="/home" element={<HomePage token={token}/>}/>}
+            {token && <Route path="/profile" element={<ProfilePage />} />}
+            {token && <Route path="/home" element={<HomePage />}/>}
             {token && <Route path="/" element={<HomePage token={token}/>} />}
             <Route path="/:username" element={token ? <ProfilePage token={token} ownProfile={false} /> : <SignInPage setToken={setToken}/>} /> {/* Dynamic route for other users' profiles */}
           </Routes>

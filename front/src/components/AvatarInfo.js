@@ -23,18 +23,23 @@ function stringToColor(string) {
 }
 
 function stringAvatar(name) {
+  const nameParts = name.split(' ');
+  let initials = nameParts[0][0];
+  if (nameParts.length > 1) {
+    initials += nameParts[1][0];
+  }
   return {
     sx: {
       bgcolor: stringToColor(name),
     },
-    children: `${name.split(' ')[0][0]}${name.split(' ')[1][0]}`,
+    children: initials
   };
 }
-
+  
 export default function AvatarInfo({displayName, size}) {
   return (
     <Stack className=''>
-      {displayName ?  <Avatar {...stringAvatar('Kelvin Wu')} className={`${size}`} /> :  <Avatar  className={`${size}`}/>}
+      {displayName ?  <Avatar {...stringAvatar(displayName)} className={`${size}`} /> :  <Avatar  className={`${size}`}/>}
     
     </Stack>
   );

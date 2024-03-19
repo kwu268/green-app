@@ -26,3 +26,15 @@ export const getUserInfo = async (user_id) => {
     throw error; // This allows the caller of getProfilePosts to handle the error
   }
 };
+
+export const getFollowedPosts = async (user_id) => {
+  try {
+    const response = await axios.get(`${serverURL}/getFollowedPost`, {
+      params: { user_id },
+    });
+    console.log("follwoer: ", response.data)
+    return response.data
+  } catch (error) {
+    
+  }
+}

@@ -19,12 +19,13 @@ import { getProfilePosts, getUserInfo } from "../api/profileApi.js";
 //changed sendLikeRequest param "method" from a string to boolean and changed in backend as well x
 
 
-const ProfilePage = ({ token, ownProfile }) => {
+const ProfilePage = ({  ownProfile }) => {
   const [posts, setPosts] = useState(false);
   const [userInfo, setUserInfo] = useState(false);
   const [numFollowers, setNumFollowers] = useState(0);
   const [numFollowing, setNumFollowing] = useState(0);
   const [open, setOpen] = useState(false);
+  const token = JSON.parse(sessionStorage.getItem("token"));
   const { username } = useParams();
   console.log(username)
 
@@ -139,7 +140,7 @@ const ProfilePage = ({ token, ownProfile }) => {
             Posts
           </div>
           <motion.div
-            className="flex mb-10 gap-14 justify-center flex-wrap w-auto h-auto"
+            className="flex mb-10 gap-14 justify-center flex-wrap w-auto h-auto border-black border-2"
             initial={{ opacity: 0, y: 50 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{

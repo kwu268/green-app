@@ -8,23 +8,25 @@ import { sendLikeRequest, postComment, getIsLiked } from "../api/postApi";
 function PostDialog({ postData, token, onActionComplete }) {
   const [isLiked, setIsLiked] = useState(false);
 
+  const loggedInToken = JSON.parse(sessionStorage.getItem('token'))
+
   const likePost = async () => {
-    await sendLikeRequest(token.user.id, postData.post_id, !isLiked);
+    await sendLikeRequest(loggedInToken.user.id, postData.post_id, !isLiked);
     await onActionComplete();
-    await getIsLiked(token.user.id, postData.post_id);
+    await getIsLiked(loggedInToken.user.id, postData.post_id);
   };
 
   const handleComment = async (event) => {
     event.preventDefault();
     const [comment] = event.target;
-    await postComment(comment.value, token.user.id, postData.post_id);
+    await postComment(comment.value, loggedInToken.user.id, postData.post_id);
     await onActionComplete();
     comment.value = "";
   };
 
   const checkIsLiked = async () => {
     try {
-      setIsLiked(await getIsLiked(token.user.id, postData.post_id));
+      setIsLiked(await getIsLiked(loggedInToken.user.id, postData.post_id));
     } catch (error) {}
   };
 

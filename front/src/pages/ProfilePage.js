@@ -52,6 +52,7 @@ const ProfilePage = () => {
     }
   }
   const refreshPostData = async () => {
+    await getTokenInfo()
     try {
       setPosts(await getProfilePosts(token.user.id));
     } catch (error) {
@@ -71,7 +72,6 @@ const ProfilePage = () => {
 
   useEffect(  () => {
     const orderOfOps = async () => {
-      await getTokenInfo()
       await refreshPostData();
       await getUserInfoData();
     }

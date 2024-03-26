@@ -19,7 +19,6 @@ export const getUserInfo = async (user_id) => {
     const response = await axios.get(`${serverURL}/getProfileInfo`, {
       params: { user_id },
     });
-    console.log("api: ", response.data);
     return response.data[0]; // This value will be returned to where the function is called
   } catch (error) {
     console.error("Error fetching data:", error);
@@ -32,9 +31,20 @@ export const getFollowedPosts = async (user_id) => {
     const response = await axios.get(`${serverURL}/getFollowedPost`, {
       params: { user_id },
     });
-    console.log("follwoer: ", response.data)
     return response.data
   } catch (error) {
     
   }
+}
+
+  export const sendParamProfileUserId = async (display_name) => {
+    try {
+      console.log("in api")
+      const response = await axios.get(`${serverURL}/paramUserId`, {
+        params: { display_name },
+      });
+      return response
+    } catch (error) {
+      
+    }
 }

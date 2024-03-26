@@ -3,7 +3,7 @@ import { useNavigate, useLocation } from "react-router-dom";
 import SearchBar from "../components/SearchBar";
 import { AnimatePresence, motion } from "framer-motion";
 import PostCard from "../components/PostCard";
-import {  getFollowedPosts } from "../api/profileApi";
+import {  getFollowedPosts, getProfilePosts } from "../api/profileApi";
 import AddBoxIcon from "@mui/icons-material/AddBox";
 import Dialog from "@mui/material/Dialog";
 import DialogContent from "@mui/material/DialogContent";
@@ -110,7 +110,7 @@ function HomePage() {
           </motion.div>
         </motion.div>
 
-          <div className=" text-left text-2xl font-medium  my-10 ml-16">
+          <div className=" text-left text-2xl font-medium  my-10 ml-16 w-full">
             Recent Posts
           </div>
           <motion.div

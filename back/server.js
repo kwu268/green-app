@@ -7,7 +7,7 @@ app.use(express.json());
 
 const { sendCreateUserRequest, sendSignInRequest, sendGetUserRequest} = require("./authorization/userAuthFuncs");
 const { sendCreatePostRequest, sendFetchPostsRequest, sendCreateCommentRequest, getIsLiked, sendLikeRequest, getFollowedPosts } = require("./posts/userPostFuncs");
-const { sendFetchProfileInfo, sendAboutMe } = require("./userInfo/accountFuncs")
+const { sendFetchProfileInfo, sendAboutMe, sendParamProfileUserId } = require("./userInfo/accountFuncs")
 
 
 app.get("/", (req, res) => {
@@ -35,11 +35,9 @@ app.post("/signIn", async (req, res) => {
 });
 
 //User Profile Information API
-
 app.get("/getProfileInfo", async (req, res) => {
   const { user_id } = req.query
   try {
-    console.log(user_id)
     const result = await sendFetchProfileInfo(user_id)
     res.json(result)
   } catch (error) {
@@ -114,6 +112,17 @@ app.post("/sendLikeRequest", async (req, res) => {
   try {
     const request = await sendLikeRequest(user_id, post_id, isLiked)
     res.json(request)
+  } catch (error) {
+    
+  }
+})
+
+app.get("/paramUserId", async (req, res) => {
+  const {display_name} = req.query
+  console.log("called")
+  try {
+    const response = await sendParamProfileUserId(display_name)
+    res.json(response)
   } catch (error) {
     
   }

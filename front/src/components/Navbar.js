@@ -3,24 +3,24 @@ import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import MenuIcon from "@mui/icons-material/Menu";
 import CloseIcon from "@mui/icons-material/Close";
-import HomeIcon from '@mui/icons-material/Home';
-import AccountCircleIcon from '@mui/icons-material/AccountCircle';
-import SettingsIcon from '@mui/icons-material/Settings';
-import AddBoxIcon from '@mui/icons-material/AddBox';
-import Dialog from '@mui/material/Dialog';
-import DialogContent from '@mui/material/DialogContent';
-import LogoutIcon from '@mui/icons-material/Logout';
+import HomeIcon from "@mui/icons-material/Home";
+import AccountCircleIcon from "@mui/icons-material/AccountCircle";
+import SettingsIcon from "@mui/icons-material/Settings";
+import AddBoxIcon from "@mui/icons-material/AddBox";
+import Dialog from "@mui/material/Dialog";
+import DialogContent from "@mui/material/DialogContent";
+import LogoutIcon from "@mui/icons-material/Logout";
 
 import CreateGameForm from "./CreateGameForm";
 
-export default function Navbar({token, setToken}) {
+export default function Navbar({ token, setToken }) {
   const [show, setShow] = useState(false);
   const [open, setOpen] = useState(false);
 
   const logOut = () => {
-    setToken(false)
-    sessionStorage.removeItem('token')
-  }
+    setToken(false);
+    sessionStorage.removeItem("token");
+  };
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -83,7 +83,10 @@ export default function Navbar({token, setToken}) {
       >
         {/* inner nav */}
         <div className=" absolute top-0 left-0 bottom-0 w-full bg-white flex flex-col">
-          <motion.ul className="flex flex-col mt-20 gap-2 h-[90%]" variants={variants_items} >
+          <motion.ul
+            className="flex flex-col mt-20 gap-2 h-[90%]"
+            variants={variants_items}
+          >
             {/* Wrap each Link with motion.li and apply the itemVariants */}
             <motion.li
               variants={variants_items}
@@ -91,7 +94,7 @@ export default function Navbar({token, setToken}) {
               whileTap={{ scale: 0.95 }}
               className="flex items-center w-full pl-4 gap-2 "
             >
-              <HomeIcon/>
+              <HomeIcon />
               <Link to="/home" className="block py-2 w-full rounded-md ">
                 Home
               </Link>
@@ -102,8 +105,12 @@ export default function Navbar({token, setToken}) {
               whileTap={{ scale: 0.95 }}
               className="flex items-center w-full pl-4 gap-2"
             >
-              <AccountCircleIcon/>
-              <Link to="/profile" className="block py-2 w-full">
+              <AccountCircleIcon />
+              <Link
+                to="/profile"
+            
+                className="block py-2 w-full"
+              >
                 Profile
               </Link>
             </motion.li>
@@ -113,7 +120,7 @@ export default function Navbar({token, setToken}) {
               whileTap={{ scale: 0.95 }}
               className="flex items-center w-full pl-4 gap-2 "
             >
-              <SettingsIcon/>
+              <SettingsIcon />
               <button className="w-full py-2 text-start">Settings</button>
             </motion.li>
             <motion.li
@@ -122,16 +129,24 @@ export default function Navbar({token, setToken}) {
               whileTap={{ scale: 0.95 }}
               className="flex items-center w-full pl-4 gap-2"
             >
-              <AddBoxIcon/>
-              <button className="w-full py-2 text-start" onClick={handleClickOpen}>Create</button>
+              <AddBoxIcon />
+              <button
+                className="w-full py-2 text-start"
+                onClick={handleClickOpen}
+              >
+                Create
+              </button>
               <Dialog
                 className="flex flex-col items-center"
                 open={open}
                 onClose={handleDialogClose}
                 fullWidth
               >
-                <DialogContent >
-                  <CreateGameForm token={token} handleDialogClose={handleDialogClose}/>
+                <DialogContent>
+                  <CreateGameForm
+                    token={token}
+                    handleDialogClose={handleDialogClose}
+                  />
                 </DialogContent>
               </Dialog>
             </motion.li>
@@ -143,10 +158,13 @@ export default function Navbar({token, setToken}) {
               whileHover={{ scale: 1.1 }}
               whileTap={{ scale: 0.95 }}
               className="flex items-center w-full pl-4 gap-2 "
-              
             >
-              <LogoutIcon/>
-              <Link to="/" className="block py-2 w-full rounded-md " onClick={logOut}>
+              <LogoutIcon />
+              <Link
+                to="/"
+                className="block py-2 w-full rounded-md "
+                onClick={logOut}
+              >
                 Logout
               </Link>
             </motion.li>

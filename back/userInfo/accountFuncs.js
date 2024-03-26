@@ -23,4 +23,18 @@ const sendFetchProfileInfo = async (user_id) => {
       return error;
     }
   };
-module.exports = { sendFetchProfileInfo, sendAboutMe };
+
+  const sendParamProfileUserId = async (display_name) => {
+    try {
+      console.log("in supa")
+      const response = await supabase
+        .from("user_profile")
+        .select('id')
+        .eq("display_name", `{
+          "display_name": "${display_name}"
+        }`);
+        console.log("HERE IT IS:  ", response.data)
+      return response.data;
+    } catch (error) {}
+  }
+module.exports = { sendFetchProfileInfo, sendAboutMe, sendParamProfileUserId };

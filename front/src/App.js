@@ -8,6 +8,7 @@ import ProfilePage from "./pages/ProfilePage.js";
 import AccountCreatedPage from "./pages/AccountCreatedPage.js";
 import HomePage from "./pages/HomePage.js";
 import Navbar from "./components/Navbar.js";
+import SearchPage from "./pages/SearchPage.js";
 function App() {
   
   const [token, setToken] = useState(false);
@@ -37,7 +38,8 @@ function App() {
             {token && <Route path="/profile" element={<ProfilePage />} />}
             {token && <Route path="/home" element={<HomePage />}/>}
             {token && <Route path="/" element={<HomePage token={token}/>} />}
-            <Route path="/:username" element={token ? <ProfilePage token={token} ownProfile={false} /> : <SignInPage setToken={setToken}/>} /> {/* Dynamic route for other users' profiles */}
+            <Route path="/profile/:username" element={token ? <ProfilePage /> : <SignInPage setToken={setToken}/>} /> {/* Dynamic route for other users' profiles */}
+            {token && <Route path="/search/:username" element={<SearchPage />} />}
           </Routes>
       </div>
     );

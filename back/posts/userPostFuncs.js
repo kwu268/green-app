@@ -42,13 +42,13 @@ const sendFetchPostsRequest = async (user_id) => {
         )
       )`
       )
-      .eq("created_by", user_id);      
-      const postData = response.data.map( post => {
-        return {
-          ...post, 
-          user_likes: post.user_likes.filter( like => like.is_liked)
-        }
-      })
+      .eq("created_by", user_id);
+    const postData = response.data.map((post) => {
+      return {
+        ...post,
+        user_likes: post.user_likes.filter((like) => like.is_liked),
+      };
+    });
     return postData;
   } catch (error) {}
 };
@@ -74,7 +74,10 @@ const sendLikeRequest = async (user_id, post_id, isLiked) => {
     if (isLiked == true) {
       const { data, error } = await supabase
         .from("user_likes")
-        .upsert({ is_liked: true, post_id: post_id, user_id: user_id }, { onConflict: ["post_id", "user_id"] })
+        .upsert(
+          { is_liked: true, post_id: post_id, user_id: user_id },
+          { onConflict: ["post_id", "user_id"] }
+        )
         .eq("user_id", user_id)
         .eq("post_id", post_id)
         .select();
@@ -82,7 +85,7 @@ const sendLikeRequest = async (user_id, post_id, isLiked) => {
     } else {
       const { data, error } = await supabase
         .from("user_likes")
-        .update( {is_liked: false })
+        .update({ is_liked: false })
         .eq("user_id", user_id)
         .eq("post_id", post_id)
         .select();
@@ -98,35 +101,30 @@ const getIsLiked = async (user_id, post_id) => {
       .from("user_likes")
       .select("is_liked")
       .eq("user_id", user_id)
-      .eq("post_id", post_id)
-      if (data.length == 0 || !(data[0].is_liked)) {
-        return false
-      }
-      else {
-        return true
-      }
+      .eq("post_id", post_id);
+    if (data.length == 0 || !data[0].is_liked) {
+      return false;
+    } else {
+      return true;
+    }
   } catch (error) {}
 };
 
 const getFollowedUsers = async (user_id) => {
-  console.log(user_id)
   try {
-    const {data, error} = await supabase
-    .from("user_follow")
-    .select("following_id")
-    .eq("user_id", user_id)
-    const followedUsers = data.map (follow => follow.following_id)
-    return followedUsers
-  } catch (error) {
-    
-  }
-}
+    const { data, error } = await supabase
+      .from("user_follow")
+      .select("following_id")
+      .eq("user_id", user_id);
+    const followedUsers = data.map((follow) => follow.following_id);
+    return followedUsers;
+  } catch (error) {}
+};
 
 const getFollowedPosts = async (user_id) => {
   try {
-    const followedUsers =  await getFollowedUsers(user_id)
-    console.log(followedUsers)
-    const {data, error} = await supabase
+    const followedUsers = await getFollowedUsers(user_id);
+    const { data, error } = await supabase
       .from("user_posts")
       .select(
         `post_id,
@@ -150,15 +148,11 @@ const getFollowedPosts = async (user_id) => {
         )
       )`
       )
-      .in('created_by', followedUsers)
-      console.log("loading2")
+      .in("created_by", followedUsers);
 
-      console.log(data)
-    return data
-  } catch (error) {
-    
-  }
-}
+    return data;
+  } catch (error) {}
+};
 module.exports = {
   sendCreatePostRequest,
   sendFetchPostsRequest,

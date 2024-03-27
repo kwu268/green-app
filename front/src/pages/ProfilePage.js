@@ -23,7 +23,6 @@ const ProfilePage = () => {
   const [numFollowers, setNumFollowers] = useState(0);
   const [numFollowing, setNumFollowing] = useState(0);
   const [open, setOpen] = useState(false);
-  const [user, setUser] = useState(null)
   let token;
   const location = useLocation();
   const { username } = useParams()
@@ -38,7 +37,6 @@ const ProfilePage = () => {
   };
 
   const getTokenInfo = async () => {
-    setUser(username)
     if (username) {
       console.log(username)
       const paramUserId = await sendParamProfileUserId(username)

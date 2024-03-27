@@ -29,7 +29,7 @@ const sendFetchProfileInfo = async (user_id) => {
       console.log("in supa")
       const response = await supabase
         .from("user_profile")
-        .select('id')
+        .select()
         .eq("display_name", `{
           "display_name": "${display_name}"
         }`);
@@ -37,4 +37,17 @@ const sendFetchProfileInfo = async (user_id) => {
       return response.data;
     } catch (error) {}
   }
-module.exports = { sendFetchProfileInfo, sendAboutMe, sendParamProfileUserId };
+
+  const sendSearchUserResult = async (display_name) => {
+    try {
+      console.log("in search")
+      const response = await supabase
+        .from("user_profile")
+        .select()
+        .ilike('display_name->>display_name', `%${display_name}%`);
+
+        console.log("HERE IT IS:  ", response)
+      return response.data;
+    } catch (error) {}
+  }
+module.exports = { sendFetchProfileInfo, sendAboutMe, sendParamProfileUserId, sendSearchUserResult };

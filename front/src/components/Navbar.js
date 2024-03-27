@@ -5,7 +5,7 @@ import MenuIcon from "@mui/icons-material/Menu";
 import CloseIcon from "@mui/icons-material/Close";
 import HomeIcon from "@mui/icons-material/Home";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
-import SettingsIcon from "@mui/icons-material/Settings";
+import SearchIcon from '@mui/icons-material/Search';
 import AddBoxIcon from "@mui/icons-material/AddBox";
 import Dialog from "@mui/material/Dialog";
 import DialogContent from "@mui/material/DialogContent";
@@ -120,8 +120,14 @@ export default function Navbar({ token, setToken }) {
               whileTap={{ scale: 0.95 }}
               className="flex items-center w-full pl-4 gap-2 "
             >
-              <SettingsIcon />
-              <button className="w-full py-2 text-start">Settings</button>
+              <SearchIcon />
+              <Link
+                to="/search"
+            
+                className="block py-2 w-full"
+              >
+                Search
+              </Link>
             </motion.li>
             <motion.li
               variants={variants_items}

@@ -7,7 +7,7 @@ app.use(express.json());
 
 const { sendCreateUserRequest, sendSignInRequest, sendGetUserRequest} = require("./authorization/userAuthFuncs");
 const { sendCreatePostRequest, sendFetchPostsRequest, sendCreateCommentRequest, getIsLiked, sendLikeRequest, getFollowedPosts } = require("./posts/userPostFuncs");
-const { sendFetchProfileInfo, sendAboutMe, sendParamProfileUserId } = require("./userInfo/accountFuncs")
+const { sendFetchProfileInfo, sendAboutMe, sendParamProfileUserId, sendSearchUserResult } = require("./userInfo/accountFuncs")
 
 
 app.get("/", (req, res) => {
@@ -122,6 +122,17 @@ app.get("/paramUserId", async (req, res) => {
   console.log("called")
   try {
     const response = await sendParamProfileUserId(display_name)
+    res.json(response)
+  } catch (error) {
+    
+  }
+})
+
+app.get("/paramSearch", async (req, res) => {
+  const {display_name} = req.query
+  console.log("called")
+  try {
+    const response = await sendSearchUserResult(display_name)
     res.json(response)
   } catch (error) {
     

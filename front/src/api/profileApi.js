@@ -47,4 +47,16 @@ export const getFollowedPosts = async (user_id) => {
     } catch (error) {
       
     }
+  }
+    
+  export const sendParamSearch = async (display_name) => {
+    try {
+      console.log("in api")
+      const response = await axios.get(`${serverURL}/paramSearch`, {
+        params: { display_name },
+      });
+      return response
+    } catch (error) {
+      
+    }
 }

@@ -114,9 +114,9 @@ const getFollowedUsers = async (user_id) => {
   try {
     const { data, error } = await supabase
       .from("user_follow")
-      .select("following_id")
+      .select("following_user_id")
       .eq("user_id", user_id);
-    const followedUsers = data.map((follow) => follow.following_id);
+    const followedUsers = data.map((follow) => follow.following_user_id);
     return followedUsers;
   } catch (error) {}
 };

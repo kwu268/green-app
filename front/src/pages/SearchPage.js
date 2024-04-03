@@ -44,7 +44,7 @@ function SearchPage() {
         }}
         className=" w-9/12 bg-white my-2 rounded-lg flex flex-col min-h-[900px] items-center"
       >
-        <div>Search User Here:</div>
+        <h1 className=" text-3xl mt-4">Search for a user</h1>
         <motion.div
           initial={{ scale: 1 }}
           animate={{ scale: isFocused ? 1.05 : 1 }}

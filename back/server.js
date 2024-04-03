@@ -7,7 +7,7 @@ app.use(express.json());
 
 const { sendCreateUserRequest, sendSignInRequest, sendGetUserRequest} = require("./authorization/userAuthFuncs");
 const { sendCreatePostRequest, sendFetchPostsRequest, sendCreateCommentRequest, getIsLiked, sendLikeRequest, getFollowedPosts } = require("./posts/userPostFuncs");
-const { sendFetchProfileInfo, sendAboutMe, sendParamProfileUserId, sendSearchUserResult } = require("./userInfo/accountFuncs")
+const { sendFetchProfileInfo, sendAboutMe, sendParamProfileUserId, sendSearchUserResult, getFollowInfo, getIsFollowed, sendFollowRequest } = require("./userInfo/accountFuncs")
 
 
 app.get("/", (req, res) => {
@@ -130,7 +130,6 @@ app.get("/paramUserId", async (req, res) => {
 
 app.get("/paramSearch", async (req, res) => {
   const {display_name} = req.query
-  console.log("called")
   try {
     const response = await sendSearchUserResult(display_name)
     res.json(response)
@@ -138,6 +137,39 @@ app.get("/paramSearch", async (req, res) => {
     
   }
 })
+
+app.get("/getFollows", async (req, res) => {
+  const {user_id} = req.query
+  try {
+    const response = await getFollowInfo(user_id)
+    res.json(response)
+  } catch (error) {
+    
+  }
+})
+
+app.get("/getIsFollowed", async (req, res) => {
+  const {user_id, following_user_id} = req.query
+  console.log("checking if followed")
+  try {
+    const response = await getIsFollowed(user_id, following_user_id)
+    res.json(response)
+  } catch (error) {
+    
+  }
+})
+
+app.post("/sendFollowRequest", async (req, res) => {
+  const {user_id, following_user_id, is_followed} = req.body
+  console.log("checking if followed")
+  try {
+    const response = await sendFollowRequest(user_id, following_user_id, is_followed)
+    res.json(response)
+  } catch (error) {
+    
+  }
+})
+
 
 app.listen(3001, () => {
   "Server started on port 3001";

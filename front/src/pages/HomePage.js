@@ -3,13 +3,11 @@ import { useNavigate, useLocation } from "react-router-dom";
 import SearchBar from "../components/SearchBar";
 import { AnimatePresence, motion } from "framer-motion";
 import PostCard from "../components/PostCard";
-import {  getFollowedPosts, getProfilePosts } from "../api/profileApi";
+import { getFollowedPosts, getProfilePosts } from "../api/profileApi";
 import AddBoxIcon from "@mui/icons-material/AddBox";
 import Dialog from "@mui/material/Dialog";
 import DialogContent from "@mui/material/DialogContent";
 import CreateGameForm from "../components/CreateGameForm";
-
-
 
 //PostCard add bottom part of card to show user avatar, name, and num likes and comments
 
@@ -23,7 +21,8 @@ function HomePage() {
   const refreshPostData = async () => {
     try {
       setPosts(await getFollowedPosts(token.user.id));
-
+      console.log("here");
+      await console.log("posts: ", posts);
     } catch (error) {
       console.error("Error refreshing post data:", error);
       return error;
@@ -69,7 +68,7 @@ function HomePage() {
         initial={{ opacity: 0, y: 50 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{
-          opacity: { duration: 3 }, 
+          opacity: { duration: 3 },
           y: { duration: 1.5 },
         }}
         className=" w-9/12 bg-white my-2 rounded-lg flex flex-col min-h-[900px] items-center"
@@ -110,32 +109,32 @@ function HomePage() {
           </motion.div>
         </motion.div>
 
-          <div className=" text-left text-2xl font-medium  my-10 ml-16 w-full">
-            Recent Posts
-          </div>
-          <motion.div
-            className="flex mb-10 gap-14 justify-center flex-wrap w-full h-auto "
-            initial={{ opacity: 0, y: 50 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{
-              opacity: { duration: 3 }, // Duration of 1 second for the opacity transition
-              y: { duration: 1.5 },
-              staggerChildren: 0.3, // Duration of 1 second for the y-axis transition
-            }}
-          >
-            {posts &&
-              posts !== false &&
-              posts.toReversed().map((postData, i) => {
-                return (
-                  <PostCard
-                    key={i}
-                    postData={postData}
-                    token={token}
-                    onActionComplete={refreshPostData}
-                  />
-                );
-              })}
-          </motion.div>
+        <div className=" text-left text-2xl font-medium  my-10 ml-16 w-full">
+          Recent Posts
+        </div>
+        <motion.div
+          className="flex mb-10 gap-14 justify-center flex-wrap w-full h-auto "
+          initial={{ opacity: 0, y: 50 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{
+            opacity: { duration: 3 }, // Duration of 1 second for the opacity transition
+            y: { duration: 1.5 },
+            staggerChildren: 0.3, // Duration of 1 second for the y-axis transition
+          }}
+        >
+          {posts &&
+            posts !== false &&
+            posts.toReversed().map((postData, i) => {
+              return (
+                <PostCard
+                  key={i}
+                  postData={postData}
+                  token={token}
+                  onActionComplete={refreshPostData}
+                />
+              );
+            })}
+        </motion.div>
       </motion.div>
     </div>
   );

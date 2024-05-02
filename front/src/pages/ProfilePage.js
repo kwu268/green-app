@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useParams, useLocation } from "react-router-dom";
 
 import AvatarInfo from "../components/AvatarInfo.js";
@@ -29,10 +29,20 @@ const ProfilePage = () => {
   const [followInfo, setFollowInfo] = useState(false);
   const [isFollowed, setIsFollowed] = useState(false)
   const [open, setOpen] = useState(false);
-  const [isOwnProfile, setIsOwnProfile] = useState(true);
-  const [token, setToken] = useState(null)
+  const [token, setToken] = useState(JSON.parse(sessionStorage.getItem("token")))
+  const firstEffectFinished = useRef(false);
+
+  const isOwnAccount = useRef(true)
+
+
+
+
   // let token;
   const location = useLocation();
+  if (location.pathname === "/profile") {
+    isOwnAccount.current = true
+  } else isOwnAccount.current = false
+
   const { username } = useParams();
 
   const handleDialogClose = () => {
@@ -52,32 +62,30 @@ const ProfilePage = () => {
 
   const getTokenInfo = async () => {
     try {
-      console.log("checking which user: ", username)
-      if (username) {
-        console.log("inside if")
+
+ 
+      if (!isOwnAccount.current) {
         const paramUserId = await sendParamProfileUserId(username);
         const currentToken = { user: { id: paramUserId.data[0].id } };
-        console.log("got the token: ",currentToken)
         setToken(currentToken)
-        console.log("token has been set to: ", token)
-        setIsOwnProfile(false);
       } else {
-        console.log("inside else")
-        // token = JSON.parse(sessionStorage.getItem("token"));
         setToken(JSON.parse(sessionStorage.getItem("token")))
-        setIsOwnProfile(true);
       }
     } catch (error) {
       
     } finally {
-      console.log("current token: ", token)
-      await checkIsFollowed();
-      await getUserInfoData()
     }
   };
   const refreshPostData = async () => {
     try {
-      setPosts(await getProfilePosts(token.user.id));
+      console.log(isOwnAccount.current)
+      console.log("current token: ", token.user.id)
+      if (!isOwnAccount.current) {
+        const paramUserId = await sendParamProfileUserId(username);
+        const currentToken = { user: { id: paramUserId.data[0].id } };
+        setPosts(await getProfilePosts(currentToken.user.id));
+      }
+      else setPosts(await getProfilePosts(token.user.id));
     } catch (error) {
       console.error("Error refreshing post data:", error);
       return error;
@@ -86,15 +94,16 @@ const ProfilePage = () => {
 
   const getUserInfoData = async () => {
     try {
-      console.log("getting user info")
-      setUserInfo(await getUserInfo(token.user.id));
-      const user = await getUserInfo(token.user.id)
-      console.log("user: ",user)
+      if (isOwnAccount.current) {
+        const currentToken = JSON.parse(sessionStorage.getItem("token"))
+        setUserInfo(await getUserInfo(currentToken.user.id))
+      }
+      else setUserInfo(await getUserInfo(token.user.id))
+      await checkIsFollowed();
       const followInfo = await getFollowInfo(token.user.id)
-      console.log(followInfo.data)
+      
       setFollowInfo(followInfo.data)
     } catch (error) {}
-    console.log();
   };
 
   const handleFollowRequest = async () => {
@@ -115,20 +124,30 @@ const ProfilePage = () => {
 
 
   useEffect(() => {
+    console.log(isOwnAccount)
     const orderOfOps = async () => {
+      
       await getTokenInfo();
     };
     orderOfOps();
-  }, [location.key,]);
+    firstEffectFinished.current = true;
+  }, [location.pathname,]);
+
 
   useEffect( () => {
-    const orderOfOps = async () => {
-      await refreshPostData()
-      await getUserInfoData();
-    };
-    orderOfOps();
-  }, [token, location.key,])
-
+    if (firstEffectFinished.current) {
+      
+      const orderOfOps = async () => {
+        
+        await refreshPostData();
+        await getUserInfoData();
+        
+      };
+      orderOfOps();
+    }
+    
+  }, [token, location.pathname,])
+  
   return (
     <div className="min-h-full h-auto flex justify-center">
       <motion.div
@@ -161,7 +180,7 @@ const ProfilePage = () => {
                   </p>
                 </div>
                 <div className="w-1/5 flex justify-center">
-                  {isOwnProfile ? (
+                  {isOwnAccount.current ? (
                     <motion.button
                       whileHover={{ scale: 1.05 }}
                       whileTap={{ scale: 0.95 }}

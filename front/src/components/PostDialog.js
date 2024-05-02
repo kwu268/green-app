@@ -1,14 +1,13 @@
 import React, { useEffect, useRef, useState } from "react";
 import TableData from "./TableData";
 import FavoriteIcon from "@mui/icons-material/Favorite";
-
+import { Link } from "react-router-dom";
 import { sendLikeRequest, postComment, getIsLiked } from "../api/postApi";
-
 
 function PostDialog({ postData, token, onActionComplete }) {
   const [isLiked, setIsLiked] = useState(false);
 
-  const loggedInToken = JSON.parse(sessionStorage.getItem('token'))
+  const loggedInToken = JSON.parse(sessionStorage.getItem("token"));
 
   const likePost = async () => {
     await sendLikeRequest(loggedInToken.user.id, postData.post_id, !isLiked);
@@ -44,9 +43,14 @@ function PostDialog({ postData, token, onActionComplete }) {
           {postData.user_comments &&
             postData.user_comments.map((commentData, i) => {
               return (
-                <div key={i} className="flex gap-2">
+                <div key={i} className="flex gap-3">
                   <div className="font-bold">
-                    {commentData.user_profile.display_name.display_name}
+                    <Link
+                      to={`/profile/${commentData.user_profile.display_name.display_name}`}
+                      className="block w-full"
+                    >
+                      {commentData.user_profile.display_name.display_name}
+                    </Link>
                   </div>
                   <div>{commentData.comment_string}</div>
                 </div>

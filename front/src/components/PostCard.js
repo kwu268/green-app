@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import Card from "@mui/material/Card";
 import { motion } from "framer-motion";
-
+import { Link } from "react-router-dom";
 import Typography from "@mui/material/Typography";
 import { CardActionArea } from "@mui/material";
 import FavoriteIcon from "@mui/icons-material/Favorite";
@@ -11,7 +11,6 @@ import DialogContent from "@mui/material/DialogContent";
 import PostDialog from "./PostDialog";
 import CardContent from "@mui/material/CardContent";
 import AvatarInfo from "../components/AvatarInfo.js";
-
 
 function PostCard({ postData, token, onActionComplete }) {
   const randomCardImage = () => {
@@ -91,10 +90,19 @@ function PostCard({ postData, token, onActionComplete }) {
         </Dialog>
         <CardContent className="h-1/5 flex items-center  ">
           <div className="mt-1 mr-3">
-            <AvatarInfo displayName={postData.user_profile.display_name.display_name} size={"w-10 h-10"}/>
+            <AvatarInfo
+              displayName={postData.user_profile.display_name.display_name}
+              size={"w-10 h-10"}
+            />
           </div>
-          <Typography variant="heading2" color="text.primary" className=" font-bold text-lg w-4/6">
-            {postData.user_profile.display_name.display_name}
+          <Typography
+            variant="heading2"
+            color="text.primary"
+            className=" font-bold text-lg w-4/6"
+          >
+            <Link to={`/profile/${postData.user_profile.display_name.display_name}`} className="block py-2 w-full">
+              {postData.user_profile.display_name.display_name}
+            </Link>
           </Typography>
           <div className="flex items-end gap-4  ">
             <div className="flex">
